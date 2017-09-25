@@ -37,7 +37,7 @@ proguard/
 captures/
 
 # Intellij
-*.iml
+# was in the generated file but might be needed *.iml
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
