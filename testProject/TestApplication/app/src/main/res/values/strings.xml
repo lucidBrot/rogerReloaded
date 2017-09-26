@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">TestApplication</string>
-    <string name="text3">works for Eric</string>
+    <string name="text3">works for Eric!</string>
 </resources>
