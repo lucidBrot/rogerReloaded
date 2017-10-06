@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /* /// legacy code before I used the Service
         int sensitivity = 100;
         sensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 sensitivity,
                 this,
                 sensorManager);
+        */
 
         final Intent intent = new Intent(this, AntiTheftService.class);
         startService(intent);
@@ -69,14 +71,18 @@ public class MainActivity extends AppCompatActivity {
     // unregister sensor on pause and reregister on resume of application
     protected void onPause() {
         super.onPause();
+        /* ///legacy code
         sensorManager.unregisterListener(spikeMovementDetector);
+         */
     }
 
     // register sensor again after application being resumed
     protected void onResume() {
         super.onResume();
+        /* ///legacy code
         sensorManager.registerListener(spikeMovementDetector, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         toast("registered sensor on "+spikeMovementDetector.toString());
         Log.d("a", "registered sensor on "+spikeMovementDetector.toString());
+        */
     }
 }
