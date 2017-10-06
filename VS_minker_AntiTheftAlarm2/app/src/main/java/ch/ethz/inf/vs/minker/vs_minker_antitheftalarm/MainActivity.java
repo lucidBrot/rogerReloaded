@@ -19,7 +19,9 @@ public class MainActivity extends AppCompatActivity {
             public void onDelayStarted() {
                 toast("Callback worked");
             }
-        }, sensitivity);
+        },
+                sensitivity,
+                this);
 
         spikeMovementDetector.doAlarmLogic(null);
     }
