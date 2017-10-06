@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">VS_minker_AntiTheftAlarm</string>
+    <string name="on">Service On</string>
+    <string name="off">Service Off</string>
 </resources>

@@ -8,6 +8,9 @@ import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,9 +36,28 @@ public class MainActivity extends AppCompatActivity {
                 this,
                 sensorManager);
 
-        Intent intent = new Intent(this, AntiTheftService.class);
+        final Intent intent = new Intent(this, AntiTheftService.class);
         startService(intent);
 
+        CheckBox onoff = findViewById(R.id.checkBox);
+        onoff.setChecked(true);
+
+        onoff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckBox checkBox = (CheckBox) view;
+                if (checkBox.isChecked()){
+                    Log.d("d", "starting service");
+                    startService(intent);
+                    checkBox.setText(R.string.on);
+                } else {
+                    Log.d("d", "stopping service");
+                    stopService(intent);
+                    checkBox.setText(R.string.off);
+                }
+            }
+        });
+        //stopService(intent);
     }
 
     private void toast(String msg){
