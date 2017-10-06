@@ -13,9 +13,12 @@ import static android.content.Context.SENSOR_SERVICE;
 public class SpikeMovementDetector extends AbstractMovementDetector {
 
     private Context activity;
-    public SpikeMovementDetector(AlarmCallback callback, int sensitivity, Context context) {
-        super(callback, sensitivity);
+    private SensorManager sensorManager;
+
+    public SpikeMovementDetector(AlarmCallback callback, int sensitivity, Context context, SensorManager sensManager) {
+        super(callback, sensitivity, context, sensManager);
         this.activity = context;
+        this.sensorManager = sensManager;
     }
 
     @Override
@@ -23,11 +26,9 @@ public class SpikeMovementDetector extends AbstractMovementDetector {
 		// TODO, insert your logic here
         Log.d("a", "started doAlarmLogic");
 
-        SensorManager sensorManager=(SensorManager) activity.getSystemService(SENSOR_SERVICE);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        // calback after listener is triggered is called in AbstractMovementDetector.java
 
-        // testing callback
-        callback.onDelayStarted();
         return false;
     }
 }
