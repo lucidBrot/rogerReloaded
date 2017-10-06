@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+        <service android:name="ch.ethz.inf.vs.minker.vs_minker_antitheftalarm.AntiTheftService"></service>
     </application>
 
 </manifest>

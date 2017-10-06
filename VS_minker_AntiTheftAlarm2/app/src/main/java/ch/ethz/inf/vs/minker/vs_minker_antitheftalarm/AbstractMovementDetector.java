@@ -34,10 +34,10 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
         Log.d("a", "Sensor triggered: "+event.sensor.getStringType());
 
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            Log.d("b", "Sensor triggered: "+event.sensor.getStringType());
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
+            Log.d("b", "Sensor triggered: "+event.sensor.getStringType()+" with values\n\t x: "+x+"\t y:"+y+"\t z: "+z);
         }
     }
 

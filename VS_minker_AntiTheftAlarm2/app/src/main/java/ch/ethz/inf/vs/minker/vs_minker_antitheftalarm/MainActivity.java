@@ -1,6 +1,7 @@
 package ch.ethz.inf.vs.minker.vs_minker_antitheftalarm;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
@@ -31,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
                 sensitivity,
                 this,
                 sensorManager);
+
+        Intent intent = new Intent(this, AntiTheftService.class);
+        startService(intent);
 
     }
 
