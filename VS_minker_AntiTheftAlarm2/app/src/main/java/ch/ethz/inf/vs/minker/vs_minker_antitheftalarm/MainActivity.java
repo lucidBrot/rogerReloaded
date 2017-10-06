@@ -2,9 +2,11 @@ package ch.ethz.inf.vs.minker.vs_minker_antitheftalarm;
 
 import android.content.Context;
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
                 this,
                 sensorManager);
 
-        spikeMovementDetector.doAlarmLogic(null);
     }
 
     private void toast(String msg){
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         sensorManager.registerListener(spikeMovementDetector, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-        toast("registered sensor again");
+        toast("registered sensor on "+spikeMovementDetector.toString());
+        Log.d("a", "registered sensor on "+spikeMovementDetector.toString());
     }
 }

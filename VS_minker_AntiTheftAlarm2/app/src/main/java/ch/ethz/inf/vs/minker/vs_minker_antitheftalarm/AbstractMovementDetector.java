@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 
 import android.hardware.SensorManager;
+import android.util.Log;
 import ch.ethz.inf.vs.minker.vs_minker_antitheftalarm.AlarmCallback;
 
 public abstract class AbstractMovementDetector implements SensorEventListener {
@@ -22,11 +23,21 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+            Log.d("sensor", "linear acceleration triggered");
             // Copy values because the event is not owned by the application
             float[] values = event.values.clone();
             if(doAlarmLogic(values)){
                 callback.onDelayStarted();
             }
+        }
+
+        Log.d("a", "Sensor triggered: "+event.sensor.getStringType());
+
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            Log.d("b", "Sensor triggered: "+event.sensor.getStringType());
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
         }
     }
 
