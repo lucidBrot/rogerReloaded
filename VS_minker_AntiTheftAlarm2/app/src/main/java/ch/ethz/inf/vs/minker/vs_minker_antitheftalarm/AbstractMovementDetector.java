@@ -22,6 +22,8 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
     // Sensor monitoring
     @Override
     public void onSensorChanged(SensorEvent event) {
+
+        /* // beautiful prestructured code that sadly doesn't work
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             Log.d("sensor", "linear acceleration triggered");
             // Copy values because the event is not owned by the application
@@ -38,6 +40,14 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
             float y = event.values[1];
             float z = event.values[2];
             Log.d("b", "Sensor triggered: "+event.sensor.getStringType()+" with values\n\t x: "+x+"\t y:"+y+"\t z: "+z);
+        }
+        */
+
+        Log.d("e", "on Sensor Changed.");
+        // Copy values because the event is not owned by the application
+        float [] values = event.values.clone();
+        if(doAlarmLogic(values)){
+            callback.onDelayStarted();
         }
     }
 

@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, AntiTheftService.class);
         startService(intent);
 
+
         CheckBox onoff = findViewById(R.id.checkBox);
         onoff.setChecked(true);
 
