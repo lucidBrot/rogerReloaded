@@ -49,8 +49,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(spikeMovementDetector, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
-        Log.d("c","started service");
-        Log.d("d", "started service (D)");
+        Log.d("AntiTheftService","started service");
         return START_STICKY;
     }
 
@@ -69,7 +68,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
                 MainActivity.class), 0);
         // set pending intent to notification builder
         note.setContentIntent(pi);
-        Log.d("c", "showing Notification");
+        Log.d("AntiTheftService", "showing Notification");
         mgr.notify(NOTIFICATION_ID, note.build());
     }
 
@@ -78,7 +77,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         stahp = true;
         mgr.cancel(NOTIFICATION_ID); //clean up notifications
 
-        Log.d("d", "onDestroy has been called for AntiTheftService");
+        Log.d("AntiTheftService", "onDestroy has been called for AntiTheftService");
     }
 
     @Override
@@ -94,6 +93,8 @@ public class AntiTheftService extends Service implements AlarmCallback{
 
             Log.d("c", "Sensor triggered: " + event.sensor.getStringType() + " with values\n\t x: " + x + "\t y:" + y + "\t z: " + z);
             */
+
+            Log.d("AntiTheftService", "onDelayStarted");
             if (mAccel > -1) {
                 showNotification();
             }

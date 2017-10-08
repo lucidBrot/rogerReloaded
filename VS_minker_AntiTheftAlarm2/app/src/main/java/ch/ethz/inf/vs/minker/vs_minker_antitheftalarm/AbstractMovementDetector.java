@@ -9,6 +9,8 @@ import android.hardware.SensorManager;
 import android.util.Log;
 import ch.ethz.inf.vs.minker.vs_minker_antitheftalarm.AlarmCallback;
 
+import java.util.Arrays;
+
 public abstract class AbstractMovementDetector implements SensorEventListener {
 
     protected AlarmCallback callback;
@@ -43,12 +45,20 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
         }
         */
 
-        Log.d("e", "on Sensor Changed.");
         // Copy values because the event is not owned by the application
         float [] values = event.values.clone();
-        if(doAlarmLogic(values)){
-            callback.onDelayStarted();
+        Log.d("e", "on Sensor Changed: "+ Arrays.toString(values));
+
+        // This was pre-coded but that doesn't trigger.
+        if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+            Log.d("f", "linear acceleration triggered");
+            if(doAlarmLogic(values)){
+                callback.onDelayStarted();
+            }
         }
+
+
+
     }
 
     @Override
