@@ -17,6 +17,7 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
     protected int sensitivity;
     private double mAccelLast;
     private double mAccelCurrent;
+    private boolean first = true;
 
     public AbstractMovementDetector(AlarmCallback callback, int sensitivity){
         this.callback = callback;
@@ -32,12 +33,13 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
             Log.d("e", "on Sensor Changed: " + Arrays.toString(values));
 
             // This was pre-coded but that doesn't trigger.
-            if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+            /* if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
                 Log.d("f", "linear acceleration triggered");
                 if (doAlarmLogic(values)) {
                     callback.onDelayStarted();
                 }
-            }
+            } */
+            // TODO: register the linear acceleration listener
 
             // own implementation
             float x = event.values[0];
@@ -48,7 +50,11 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
             double diff = mAccelCurrent - mAccelLast;
             if (diff > sensitivity) {
                 Log.d("f", "noticed acceleration above threshhold: " + diff);
-                callback.onDelayStarted();
+                if (!first) { callback.onDelayStarted(); }
+                else {
+                    Log.d("f", "skipped first occurrence");
+                    first = false;
+                }
             }
 
     }

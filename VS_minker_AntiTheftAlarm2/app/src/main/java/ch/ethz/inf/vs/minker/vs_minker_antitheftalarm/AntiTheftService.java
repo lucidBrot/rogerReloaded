@@ -64,7 +64,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         return START_STICKY;
     }
 
-    private void showNotification() {
+    private void showNotification() { //TODO: keep sound consistently on in addition to the notification
 
         NotificationCompat.Builder note = new NotificationCompat.Builder(this);
         note.setContentTitle("Device Accelerometer Notification");
