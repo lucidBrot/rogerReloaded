@@ -1,5 +1,5 @@
 package ch.ethz.inf.vs.minker.vs_minker_antitheftalarm;
-
+//TODO: use PreferenceFragment
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;

@@ -15,6 +15,9 @@ import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class AntiTheftService extends Service implements AlarmCallback{
 
     private SensorManager sensorManager;
@@ -89,19 +92,19 @@ public class AntiTheftService extends Service implements AlarmCallback{
     @Override
     public void onDelayStarted() {
         if(!stahp) {
-            /* ///legacy code. does not work with new structure but keeping as reference
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-            mAccelLast = mAccelCurrent;
-            mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
-            float diff = mAccelCurrent - mAccelLast;
-
-            Log.d("c", "Sensor triggered: " + event.sensor.getStringType() + " with values\n\t x: " + x + "\t y:" + y + "\t z: " + z);
-            */
-
             Log.d("AntiTheftService", "onDelayStarted");
-            showNotification();
+            // not sure why, but k I'll give you a delay
+            (new Timer()).schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    // this code will be executed after delay seconds
+                    Log.d("AntiTheftService", "Delay timer finished");
+                    showNotification();
+                }
+            }, (long) (1000*delay));
+            Log.d("AntiTheftService", "onDelayStarted finished");
+
+
         }
     }
 }

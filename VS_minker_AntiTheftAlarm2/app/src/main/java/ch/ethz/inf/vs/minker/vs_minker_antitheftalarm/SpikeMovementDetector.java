@@ -8,6 +8,8 @@ import android.util.Log;
 import ch.ethz.inf.vs.minker.vs_minker_antitheftalarm.AlarmCallback;
 
 import java.io.Console;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -22,7 +24,8 @@ public class SpikeMovementDetector extends AbstractMovementDetector {
 
     @Override
     public boolean doAlarmLogic(float[] values) { // return true if device is being stolen
-		// TODO, insert your logic here
+        // TODO: what logic?
+
         Log.d("a", "started doAlarmLogic");
         return true;
     }
