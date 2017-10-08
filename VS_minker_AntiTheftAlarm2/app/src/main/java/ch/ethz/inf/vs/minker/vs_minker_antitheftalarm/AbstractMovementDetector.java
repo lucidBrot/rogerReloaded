@@ -15,6 +15,8 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
 
     protected AlarmCallback callback;
     protected int sensitivity;
+    private double mAccelLast;
+    private double mAccelCurrent;
 
     public AbstractMovementDetector(AlarmCallback callback, int sensitivity){
         this.callback = callback;
@@ -24,26 +26,6 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
     // Sensor monitoring
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-        /* // beautiful prestructured code that sadly doesn't work
-        if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-            Log.d("sensor", "linear acceleration triggered");
-            // Copy values because the event is not owned by the application
-            float[] values = event.values.clone();
-            if(doAlarmLogic(values)){
-                callback.onDelayStarted();
-            }
-        }
-
-        Log.d("a", "Sensor triggered: "+event.sensor.getStringType());
-
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-            Log.d("b", "Sensor triggered: "+event.sensor.getStringType()+" with values\n\t x: "+x+"\t y:"+y+"\t z: "+z);
-        }
-        */
 
         // Copy values because the event is not owned by the application
         float [] values = event.values.clone();
@@ -57,7 +39,16 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
             }
         }
 
-
+        // own implementation
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+        mAccelLast = mAccelCurrent;
+        mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+        double diff = mAccelCurrent - mAccelLast;
+        if(diff>sensitivity){
+            Log.d("f", "noticed acceleration above threshhold: "+diff);
+        }
 
     }
 

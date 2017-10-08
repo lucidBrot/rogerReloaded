@@ -18,13 +18,10 @@ public class AntiTheftService extends Service implements AlarmCallback{
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
-    private float mAccel;
-    private float mAccelCurrent;
-    private float mAccelLast;
     private NotificationManager mgr;
     private int NOTIFICATION_ID = 101;
     private boolean stahp = false;
-    private int sensitivity = 100; // TODO: let the user set the sensitivity
+    private int sensitivity = 1; // TODO: let the user set the sensitivity
 
     public AntiTheftService() {
     }
@@ -83,7 +80,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
     @Override
     public void onDelayStarted() {
         if(!stahp) {
-            /* ///legacy cde. does not work with new structure but keeping as reference
+            /* ///legacy code. does not work with new structure but keeping as reference
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
@@ -95,9 +92,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
             */
 
             Log.d("AntiTheftService", "onDelayStarted");
-            if (mAccel > -1) {
-                showNotification();
-            }
+            showNotification();
         }
     }
 }
