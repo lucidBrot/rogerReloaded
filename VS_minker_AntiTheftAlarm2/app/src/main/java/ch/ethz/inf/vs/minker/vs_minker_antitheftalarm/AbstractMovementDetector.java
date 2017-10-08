@@ -48,6 +48,7 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
         double diff = mAccelCurrent - mAccelLast;
         if(diff>sensitivity){
             Log.d("f", "noticed acceleration above threshhold: "+diff);
+            callback.onDelayStarted();
         }
 
     }
