@@ -3,4 +3,8 @@
     <string name="on">Service On</string>
     <string name="off">Service Off</string>
     <string name="settings">settings</string>
+    <string name="Three">Three</string>
+    <string name="two">Two</string>
+    <string name="one">One</string>
+    <string name="sharedprefs">sharedprefs</string>
 </resources>

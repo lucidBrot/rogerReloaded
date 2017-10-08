@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".SettingActivity">
+
+        </activity>
         <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
         <service android:name="ch.ethz.inf.vs.minker.vs_minker_antitheftalarm.AntiTheftService"></service>
     </application>

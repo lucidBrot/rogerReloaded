@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -21,7 +22,10 @@ public class AntiTheftService extends Service implements AlarmCallback{
     private NotificationManager mgr;
     private int NOTIFICATION_ID = 101;
     private boolean stahp = false;
-    private int sensitivity = 1; // TODO: let the user set the sensitivity
+    public static final int DEFAULT_SENSITIVITY = 1;
+    public static final float DEFAULT_DELAY = 5; // in seconds
+    private float delay;
+    private int sensitivity ;
 
     public AntiTheftService() {
     }
@@ -33,6 +37,11 @@ public class AntiTheftService extends Service implements AlarmCallback{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        SharedPreferences sp = getSharedPreferences(getString(R.string.sharedprefs), Context.MODE_PRIVATE);
+        sensitivity = sp.getInt("sensitivity", DEFAULT_SENSITIVITY);
+        delay = sp.getFloat("delay", DEFAULT_DELAY);
+        Log.d("g", "set sensitivity "+sensitivity+" and delay "+delay+" seconds.");
+
         mgr = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         /* /// legacy code. keeping as reference

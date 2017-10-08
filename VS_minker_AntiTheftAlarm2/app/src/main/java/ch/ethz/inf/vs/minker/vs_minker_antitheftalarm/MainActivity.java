@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
 
 
-        CheckBox onoff = findViewById(R.id.checkBox);
+        final CheckBox onoff = findViewById(R.id.checkBox);
         onoff.setChecked(true);
 
         onoff.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        //stopService(intent);
+
     }
 
     @Override
@@ -55,6 +57,18 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.my_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings_menu_item:
+                Intent i = new Intent(this,SettingActivity.class);
+                this.startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void toast(String msg){
