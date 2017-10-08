@@ -94,17 +94,20 @@ public class AntiTheftService extends Service implements AlarmCallback{
         if(!stahp) {
             Log.d("AntiTheftService", "onDelayStarted");
             // not sure why, but k I'll give you a delay
-            Timer tim = new Timer();
+            /*Timer tim = new Timer();
             tim.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     // this code will be executed after delay seconds
                     String did = (!stahp) ? "did" : "didn't";
-                    if(!stahp) { showNotification(); };
+                    if(!stahp) { showNotification(); }
                     Log.d("AntiTheftService", "Delay timer finished. "+did+" show notification.");
                 }
             }, (long) (1000*delay));
             Log.d("AntiTheftService", "onDelayStarted finished");
+            */
+
+            if(!stahp) {showNotification();}
         }
     }
 }
