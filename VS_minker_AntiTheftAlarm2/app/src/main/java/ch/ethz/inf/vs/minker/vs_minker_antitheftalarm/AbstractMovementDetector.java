@@ -27,29 +27,29 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        // Copy values because the event is not owned by the application
-        float [] values = event.values.clone();
-        Log.d("e", "on Sensor Changed: "+ Arrays.toString(values));
+            // Copy values because the event is not owned by the application
+            float[] values = event.values.clone();
+            Log.d("e", "on Sensor Changed: " + Arrays.toString(values));
 
-        // This was pre-coded but that doesn't trigger.
-        if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-            Log.d("f", "linear acceleration triggered");
-            if(doAlarmLogic(values)){
+            // This was pre-coded but that doesn't trigger.
+            if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+                Log.d("f", "linear acceleration triggered");
+                if (doAlarmLogic(values)) {
+                    callback.onDelayStarted();
+                }
+            }
+
+            // own implementation
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+            mAccelLast = mAccelCurrent;
+            mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+            double diff = mAccelCurrent - mAccelLast;
+            if (diff > sensitivity) {
+                Log.d("f", "noticed acceleration above threshhold: " + diff);
                 callback.onDelayStarted();
             }
-        }
-
-        // own implementation
-        float x = event.values[0];
-        float y = event.values[1];
-        float z = event.values[2];
-        mAccelLast = mAccelCurrent;
-        mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
-        double diff = mAccelCurrent - mAccelLast;
-        if(diff>sensitivity){
-            Log.d("f", "noticed acceleration above threshhold: "+diff);
-            callback.onDelayStarted();
-        }
 
     }
 

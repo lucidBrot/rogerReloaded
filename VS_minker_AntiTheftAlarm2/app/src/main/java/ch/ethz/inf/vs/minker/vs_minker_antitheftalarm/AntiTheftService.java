@@ -23,12 +23,14 @@ public class AntiTheftService extends Service implements AlarmCallback{
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private NotificationManager mgr;
+    private SpikeMovementDetector spikeMovementDetector;
     private int NOTIFICATION_ID = 101;
     private boolean stahp = false;
     public static final int DEFAULT_SENSITIVITY = 1;
     public static final float DEFAULT_DELAY = 5; // in seconds
     private float delay;
     private int sensitivity ;
+    private int phone_taken = 0; // 1 means timer is running, 2 means timer is done and we can alarm and 0 means base state
 
 
 
@@ -54,7 +56,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         */
 
         sensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
-        SpikeMovementDetector spikeMovementDetector = new SpikeMovementDetector(this, sensitivity);
+        spikeMovementDetector = new SpikeMovementDetector(this, sensitivity);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(spikeMovementDetector, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
@@ -85,15 +87,27 @@ public class AntiTheftService extends Service implements AlarmCallback{
     public void onDestroy(){
         stahp = true; //
         mgr.cancel(NOTIFICATION_ID); //clean up current notifications
-
-        Log.d("AntiTheftService", "onDestroy has been called for AntiTheftService");
+        sensorManager.unregisterListener(spikeMovementDetector);
+        Log.d("AntiTheftService", "onDestroy has been called for AntiTheftService. Unregistered listener.");
     }
 
     @Override
     public void onDelayStarted() {
-        if(!stahp) {
-            Log.d("AntiTheftService", "onDelayStarted");
-            // not sure why, but k I'll give you a delay
+
+        if(phone_taken == 0) { // if the protection was never triggered before, wait 5 sec.
+            (new Timer()).schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if(!stahp) { showNotification();}
+                    phone_taken = 2;
+                    Log.d("AntiTheftService", "timer ran out!");
+                }
+            }, (long) (1000*delay));
+        } else if (phone_taken == 1) { // timer is running, do nothing as the alarm will triger anyways
+        } else { // timer is over, do usual alarming unless service stopped
+            if (!stahp) {
+                Log.d("AntiTheftService", "onDelayStarted");
+                // not sure why, but k I'll give you a delay
             /*Timer tim = new Timer();
             tim.schedule(new TimerTask() {
                 @Override
@@ -107,7 +121,10 @@ public class AntiTheftService extends Service implements AlarmCallback{
             Log.d("AntiTheftService", "onDelayStarted finished");
             */
 
-            if(!stahp) {showNotification();}
+                if (!stahp) {
+                    showNotification();
+                }
+            }
         }
     }
 }
