@@ -14,7 +14,7 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
     protected AlarmCallback callback;
     protected int sensitivity;
 
-    public AbstractMovementDetector(AlarmCallback callback, int sensitivity, Context context, SensorManager sensManager){
+    public AbstractMovementDetector(AlarmCallback callback, int sensitivity){
         this.callback = callback;
         this.sensitivity = sensitivity;
     }
