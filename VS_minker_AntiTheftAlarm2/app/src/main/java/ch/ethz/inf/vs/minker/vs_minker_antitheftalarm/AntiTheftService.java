@@ -8,13 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,8 +30,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
     private float delay;
     private int sensitivity ;
 
-    public AntiTheftService() {
-    }
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -40,6 +39,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+
         SharedPreferences sp = getSharedPreferences(getString(R.string.sharedprefs), Context.MODE_PRIVATE);
         sensitivity = sp.getInt("sensitivity", DEFAULT_SENSITIVITY);
         delay = sp.getFloat("delay", DEFAULT_DELAY);
@@ -83,8 +83,8 @@ public class AntiTheftService extends Service implements AlarmCallback{
 
     @Override
     public void onDestroy(){
-        stahp = true;
-        mgr.cancel(NOTIFICATION_ID); //clean up notifications
+        stahp = true; //
+        mgr.cancel(NOTIFICATION_ID); //clean up current notifications
 
         Log.d("AntiTheftService", "onDestroy has been called for AntiTheftService");
     }
@@ -94,17 +94,17 @@ public class AntiTheftService extends Service implements AlarmCallback{
         if(!stahp) {
             Log.d("AntiTheftService", "onDelayStarted");
             // not sure why, but k I'll give you a delay
-            (new Timer()).schedule(new TimerTask() {
+            Timer tim = new Timer();
+            tim.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     // this code will be executed after delay seconds
-                    Log.d("AntiTheftService", "Delay timer finished");
-                    showNotification();
+                    String did = (!stahp) ? "did" : "didn't";
+                    if(!stahp) { showNotification(); };
+                    Log.d("AntiTheftService", "Delay timer finished. "+did+" show notification.");
                 }
             }, (long) (1000*delay));
             Log.d("AntiTheftService", "onDelayStarted finished");
-
-
         }
     }
 }
