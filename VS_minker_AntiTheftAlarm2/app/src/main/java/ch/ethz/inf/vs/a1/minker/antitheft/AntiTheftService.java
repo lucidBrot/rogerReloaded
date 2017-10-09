@@ -83,8 +83,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         Log.d("AntiTheftService","started service");
         return START_STICKY;
     }
-
-    //TODO: silent notification is not permanent yet
+    
     private void showNotification() {
 
         NotificationCompat.Builder note = new NotificationCompat.Builder(this);
@@ -114,6 +113,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         note.setVibrate(null); //don't vibrate
         // Icon to be set on Notification
         note.setSmallIcon(R.mipmap.ic_launcher);
+        note.setOngoing(true);
         // This pending intent will open after notification click
         PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this,
                 MainActivity.class), 0);
