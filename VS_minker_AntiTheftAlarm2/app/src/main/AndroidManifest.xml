@@ -20,6 +20,7 @@
 
         </activity>
         <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+        <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="true" />
         <service android:name="ch.ethz.inf.vs.minker.vs_minker_antitheftalarm.AntiTheftService"></service>
     </application>
 

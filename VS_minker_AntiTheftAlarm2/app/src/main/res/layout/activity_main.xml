@@ -8,8 +8,8 @@
         tools:context="ch.ethz.inf.vs.minker.vs_minker_antitheftalarm.MainActivity">
 
     <CheckBox
-            android:text="@string/on"
+            android:text="@string/off"
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/checkBox" android:layout_weight="1"
-    />
+            android:checked="false"/>
 </LinearLayout>

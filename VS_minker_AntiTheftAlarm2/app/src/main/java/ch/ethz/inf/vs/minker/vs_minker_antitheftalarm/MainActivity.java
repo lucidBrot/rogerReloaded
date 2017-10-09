@@ -2,6 +2,7 @@ package ch.ethz.inf.vs.minker.vs_minker_antitheftalarm;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
@@ -21,18 +22,28 @@ public class MainActivity extends AppCompatActivity {
 
     private SensorManager sensorManager;
     private SpikeMovementDetector spikeMovementDetector;
+    public static int SENSOR_LINEAR = 0;
+    public static int SENSOR_MINE = 1;
+    public static int SENSOR_DEFAULT = SENSOR_LINEAR;
+    public static Context appcontext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Intent intent = new Intent(this, AntiTheftService.class);
-        startService(intent);
+        appcontext = getApplicationContext();
 
+        final Intent intent = new Intent(this, AntiTheftService.class);
+
+        // store what sensor to use
+        SharedPreferences sp = getSharedPreferences(getString(R.string.sharedprefs), Context.MODE_PRIVATE);
+        SharedPreferences.Editor sped = sp.edit();
+        sped.putInt("sensor_type", SENSOR_DEFAULT);
+        sped.apply();
 
         final CheckBox onoff = findViewById(R.id.checkBox);
-        onoff.setChecked(true);
+        onoff.setChecked(false);
 
         onoff.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    // unregister sensor on pause and reregister on resume of application
+    // legacy: (unregister sensor on pause and reregister on resume of application)
+    // not doing this anymore because it's running in a background service anyways
     protected void onPause() {
         super.onPause();
         /* ///legacy code
