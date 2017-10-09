@@ -1,6 +1,7 @@
 package ch.ethz.inf.vs.a1.minker.antitheft;
 //TODO: use PreferenceFragment
 //TODO: only offer Preference options that exist as sensor on the device
+//TODO: change sensor type in settings
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -45,6 +46,11 @@ public class SettingActivity extends AppCompatActivity{
         int sensitivity = sharedPreferences.getInt("sensitivity", AntiTheftService.DEFAULT_SENSITIVITY);
         ((EditText) findViewById(R.id.editText2)).setHint("current: "+delay);
         ((EditText) findViewById(R.id.editText3)).setHint("current: "+sensitivity);
+
+        // Display the fragment as the main content.
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new MySettingsFragment())
+                .commit();
     }
 
     private void toast(String msg){

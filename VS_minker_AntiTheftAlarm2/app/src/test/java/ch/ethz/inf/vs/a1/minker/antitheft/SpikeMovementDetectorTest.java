@@ -1,7 +1,6 @@
 package ch.ethz.inf.vs.a1.minker.antitheft;
 
-import ch.ethz.inf.vs.a1.nethz.antitheft.AlarmCallback;
-import ch.ethz.inf.vs.a1.nethz.antitheft.movement_detector.SpikeMovementDetector;
+import ch.ethz.inf.vs.a1.minker.antitheft.movement_detector.SpikeMovementDetector;
 
 import org.junit.Before;
 import org.junit.Test;

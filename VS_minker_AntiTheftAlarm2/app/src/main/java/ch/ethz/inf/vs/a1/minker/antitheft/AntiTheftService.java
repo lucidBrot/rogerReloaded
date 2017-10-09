@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import ch.ethz.inf.vs.a1.minker.antitheft.movement_detector.SpikeMovementDetector;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -83,7 +84,8 @@ public class AntiTheftService extends Service implements AlarmCallback{
         return START_STICKY;
     }
 
-    private void showNotification() { //TODO: keep sound consistently on
+    //TODO: silent notification is not permanent yet
+    private void showNotification() {
 
         NotificationCompat.Builder note = new NotificationCompat.Builder(this);
         note.setContentTitle("Device Accelerometer Notification");

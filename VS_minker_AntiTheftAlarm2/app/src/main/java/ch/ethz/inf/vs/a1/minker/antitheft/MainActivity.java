@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
+import ch.ethz.inf.vs.a1.minker.antitheft.movement_detector.SpikeMovementDetector;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //TODO: load default preferences on first app launch
+        //PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         appcontext = getApplicationContext();
 
