@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference android:inputType="number"
-                    android:defaultValue="2"
+                    android:defaultValue="@string/defaultDelay"
                     android:key="@string/key_delay"
                     android:title="@string/delay"/>
     <EditTextPreference android:inputType="number"
-                        android:defaultValue="1"
+                        android:defaultValue="@string/defaultSensitivity"
                         android:key="@string/key_sensitivity"
                         android:title="@string/sensitivity" />
 </PreferenceScreen>

@@ -11,4 +11,6 @@
     <string name="sensitivity">sensitivity</string>
     <string name="key_sensitivity">sensitivity</string>
     <string name="key_delay">delay</string>
+    <string name="defaultDelay">2</string>
+    <string name="defaultSensitivity">1</string>
 </resources>

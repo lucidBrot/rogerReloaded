@@ -1,5 +1,5 @@
 package ch.ethz.inf.vs.a1.minker.antitheft;
-
+//TODO: Play alarm even if device is locked
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -29,8 +29,8 @@ public class AntiTheftService extends Service implements AlarmCallback{
     private int NOTIFICATION_ID = 101;
     private int NOTIFICATION_ID_SILENT = 102;
     private boolean stahp = false;
-    public static final int DEFAULT_SENSITIVITY = 1; //TODO: load DEFAULT_SENSITIVITY and DEFAULT_DELAY from preferences
-    public static final float DEFAULT_DELAY = 2; // in seconds
+    public static int DEFAULT_SENSITIVITY = 1;
+    public static float DEFAULT_DELAY = 2.1f; // in seconds
     private float delay;
     private int sensitivity ;
     private int phone_taken = 0; // 1 means timer is running, 2 means timer is done and we can alarm and 0 means base state
@@ -44,6 +44,9 @@ public class AntiTheftService extends Service implements AlarmCallback{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        DEFAULT_DELAY = Integer.parseInt(getString(R.string.defaultDelay));
+        DEFAULT_SENSITIVITY = Integer.parseInt(getString(R.string.defaultSensitivity));
+
         silent_mgr = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         showSilentNotification();
 
