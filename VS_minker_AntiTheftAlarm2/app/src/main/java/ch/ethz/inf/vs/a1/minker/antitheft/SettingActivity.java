@@ -45,7 +45,6 @@ public class SettingActivity extends AppCompatActivity{
         int sensitivity = sharedPreferences.getInt("sensitivity", AntiTheftService.DEFAULT_SENSITIVITY);
         ((EditText) findViewById(R.id.editText2)).setHint("current: "+delay);
         ((EditText) findViewById(R.id.editText3)).setHint("current: "+sensitivity); */
-        // TODO: Check where those DEFAULT_DELAY and DEFAULT_SENSITIVITY values were used and remove them appropriately
 
         // Display the fragment as the main content.
         getFragmentManager().beginTransaction()

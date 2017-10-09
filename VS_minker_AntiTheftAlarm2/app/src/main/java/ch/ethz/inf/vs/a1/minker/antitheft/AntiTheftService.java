@@ -83,7 +83,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         Log.d("AntiTheftService","started service");
         return START_STICKY;
     }
-    
+
     private void showNotification() {
 
         NotificationCompat.Builder note = new NotificationCompat.Builder(this);

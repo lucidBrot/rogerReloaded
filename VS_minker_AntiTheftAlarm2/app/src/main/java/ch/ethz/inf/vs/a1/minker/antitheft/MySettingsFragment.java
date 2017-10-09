@@ -11,7 +11,6 @@ public class MySettingsFragment extends PreferenceFragment {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-        //TODO: remove the other content of SettingActivity
         //TODO: enable choosing of sensor
         //TODO: enable choosing of sensor only if that sensor exists
     }
