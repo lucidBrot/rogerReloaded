@@ -6,7 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:id="@+id/top_settings"
         tools:context="ch.ethz.inf.vs.a1.minker.antitheft.MainActivity">
+
 
     <LinearLayout
             android:orientation="horizontal"

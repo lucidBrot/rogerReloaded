@@ -1,7 +1,5 @@
 package ch.ethz.inf.vs.a1.minker.antitheft;
-//TODO: use PreferenceFragment
-//TODO: only offer Preference options that exist as sensor on the device
-//TODO: change sensor type in settings
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,8 +14,9 @@ public class SettingActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.empty);
 
+        /*
         Button btn = findViewById(R.id.confirm_btn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +44,8 @@ public class SettingActivity extends AppCompatActivity{
         float delay = sharedPreferences.getFloat("delay", AntiTheftService.DEFAULT_DELAY);
         int sensitivity = sharedPreferences.getInt("sensitivity", AntiTheftService.DEFAULT_SENSITIVITY);
         ((EditText) findViewById(R.id.editText2)).setHint("current: "+delay);
-        ((EditText) findViewById(R.id.editText3)).setHint("current: "+sensitivity);
+        ((EditText) findViewById(R.id.editText3)).setHint("current: "+sensitivity); */
+        // TODO: Check where those DEFAULT_DELAY and DEFAULT_SENSITIVITY values were used and remove them appropriately
 
         // Display the fragment as the main content.
         getFragmentManager().beginTransaction()
