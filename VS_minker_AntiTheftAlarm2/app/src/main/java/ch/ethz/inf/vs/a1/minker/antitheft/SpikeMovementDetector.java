@@ -1,18 +1,8 @@
-package ch.ethz.inf.vs.minker.vs_minker_antitheftalarm;
+package ch.ethz.inf.vs.a1.minker.antitheft;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorManager;
 import android.util.Log;
-import ch.ethz.inf.vs.minker.vs_minker_antitheftalarm.AlarmCallback;
-
-import java.io.Console;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import static android.content.Context.SENSOR_SERVICE;
 
 public class SpikeMovementDetector extends AbstractMovementDetector {
 

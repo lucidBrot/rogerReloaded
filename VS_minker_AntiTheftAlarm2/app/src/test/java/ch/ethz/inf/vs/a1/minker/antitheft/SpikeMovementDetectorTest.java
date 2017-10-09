@@ -1,4 +1,4 @@
-package ch.ethz.inf.vs.minker.vs_minker_antitheftalarm;
+package ch.ethz.inf.vs.a1.minker.antitheft;
 
 import ch.ethz.inf.vs.a1.nethz.antitheft.AlarmCallback;
 import ch.ethz.inf.vs.a1.nethz.antitheft.movement_detector.SpikeMovementDetector;

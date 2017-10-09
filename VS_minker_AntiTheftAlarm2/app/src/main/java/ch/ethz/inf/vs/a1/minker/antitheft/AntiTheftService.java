@@ -1,4 +1,4 @@
-package ch.ethz.inf.vs.minker.vs_minker_antitheftalarm;
+package ch.ethz.inf.vs.a1.minker.antitheft;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -29,7 +29,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
     private int NOTIFICATION_ID_SILENT = 102;
     private boolean stahp = false;
     public static final int DEFAULT_SENSITIVITY = 1;
-    public static final float DEFAULT_DELAY = 5; // in seconds
+    public static final float DEFAULT_DELAY = 2; // in seconds
     private float delay;
     private int sensitivity ;
     private int phone_taken = 0; // 1 means timer is running, 2 means timer is done and we can alarm and 0 means base state

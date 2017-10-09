@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "25.0.0"
     defaultConfig {
-        applicationId "ch.ethz.inf.vs.minker.vs_minker_antitheftalarm"
+        applicationId "ch.ethz.inf.vs.a1.minker.vs_minker_antitheftalarm"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
