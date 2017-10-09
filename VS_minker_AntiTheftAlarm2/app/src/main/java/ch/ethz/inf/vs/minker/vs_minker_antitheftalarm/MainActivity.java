@@ -109,5 +109,5 @@ public class MainActivity extends AppCompatActivity {
         */
         ((CheckBox) findViewById(R.id.checkBox)).setChecked(waschecked);
     }
-    
+
 }

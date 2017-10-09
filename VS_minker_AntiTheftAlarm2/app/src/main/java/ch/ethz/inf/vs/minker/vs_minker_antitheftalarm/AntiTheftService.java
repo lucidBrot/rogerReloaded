@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
@@ -135,6 +136,9 @@ public class AntiTheftService extends Service implements AlarmCallback{
         if(start) {
             if(!mediaPlayer_alarm.isPlaying()) {
                 mediaPlayer_alarm.setLooping(true);
+                    AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+                    // set the volume of played media to maximum.
+                    audioManager.setStreamVolume (AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC),0);
                 mediaPlayer_alarm.start();
             }
         } else {
