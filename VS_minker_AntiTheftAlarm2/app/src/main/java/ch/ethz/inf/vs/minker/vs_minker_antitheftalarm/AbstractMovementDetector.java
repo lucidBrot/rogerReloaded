@@ -15,9 +15,7 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
 
     protected AlarmCallback callback;
     protected int sensitivity;
-    private double mAccelLast;
-    private double mAccelCurrent;
-    private boolean first = true;
+
 
     public AbstractMovementDetector(AlarmCallback callback, int sensitivity){
         this.callback = callback;
@@ -39,22 +37,10 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
                     callback.onDelayStarted();
                 }
             } */
-            // TODO: register the linear acceleration listener
+            // TODO: do I need the above?
 
-            // own implementation
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-            mAccelLast = mAccelCurrent;
-            mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
-            double diff = mAccelCurrent - mAccelLast;
-            if (diff > sensitivity) {
-                Log.d("f", "noticed acceleration above threshhold: " + diff);
-                if (!first) { callback.onDelayStarted(); }
-                else {
-                    Log.d("f", "skipped first occurrence");
-                    first = false;
-                }
+            if(doAlarmLogic(event.values)){
+                callback.onDelayStarted();
             }
 
     }

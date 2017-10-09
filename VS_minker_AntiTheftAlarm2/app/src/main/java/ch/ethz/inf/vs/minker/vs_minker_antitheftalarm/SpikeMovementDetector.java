@@ -15,6 +15,9 @@ import static android.content.Context.SENSOR_SERVICE;
 
 public class SpikeMovementDetector extends AbstractMovementDetector {
 
+    private double mAccelLast;
+    private double mAccelCurrent;
+    private boolean first = true;
 
     public SpikeMovementDetector(AlarmCallback callback, int sensitivity) {
         super(callback, sensitivity);
@@ -26,7 +29,24 @@ public class SpikeMovementDetector extends AbstractMovementDetector {
     public boolean doAlarmLogic(float[] values) { // return true if device is being stolen
         // TODO: what logic?
 
-        Log.d("a", "started doAlarmLogic");
-        return true;
+        // TODO: register the linear acceleration listener
+
+        // own sensor implementation
+        float x = values[0];
+        float z = values[2];
+        float y = values[1];
+        mAccelLast = mAccelCurrent;
+        mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+        double diff = mAccelCurrent - mAccelLast;
+        if (diff > sensitivity) {
+            Log.d("f", "noticed acceleration above threshhold: " + diff);
+            if (!first) { return true; }
+            else {
+                Log.d("f", "skipped first occurrence");
+                first = false;
+                return false;
+            }
+        }
+        return false;
     }
 }
