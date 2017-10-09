@@ -29,7 +29,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
     private int NOTIFICATION_ID = 101;
     private int NOTIFICATION_ID_SILENT = 102;
     private boolean stahp = false;
-    public static final int DEFAULT_SENSITIVITY = 1;
+    public static final int DEFAULT_SENSITIVITY = 1; //TODO: load DEFAULT_SENSITIVITY and DEFAULT_DELAY from preferences
     public static final float DEFAULT_DELAY = 2; // in seconds
     private float delay;
     private int sensitivity ;
