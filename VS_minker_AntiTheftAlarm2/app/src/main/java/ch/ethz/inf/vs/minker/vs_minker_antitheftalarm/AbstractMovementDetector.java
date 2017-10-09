@@ -30,15 +30,6 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
             float[] values = event.values.clone();
             Log.d("e", "on Sensor Changed: " + Arrays.toString(values));
 
-            // This was pre-coded but that doesn't trigger.
-            /* if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-                Log.d("f", "linear acceleration triggered");
-                if (doAlarmLogic(values)) {
-                    callback.onDelayStarted();
-                }
-            } */
-            // TODO: do I need the above?
-
             if(doAlarmLogic(event.values)){
                 callback.onDelayStarted();
             }
