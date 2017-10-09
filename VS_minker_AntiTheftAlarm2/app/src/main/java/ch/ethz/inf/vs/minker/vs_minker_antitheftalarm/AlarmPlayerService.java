@@ -25,6 +25,7 @@ public class AlarmPlayerService extends Service{
         Log.d("AlarmPlayerService", "AlarmPlayerService was created");
         if(start) {
             mediaPlayer_alarm = MediaPlayer.create(MainActivity.appcontext, R.raw.alarm);
+            setMPVolume(100); //set to max volume
             mediaPlayer_alarm.setLooping(true);
             mediaPlayer_alarm.start();
             toast("starting Alarm Music");
@@ -42,6 +43,11 @@ public class AlarmPlayerService extends Service{
         Context context = getApplicationContext();
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    private void setMPVolume(int volume){
+        float i = (float) volume/100;
+        mediaPlayer_alarm.setVolume((float) i, (float) i);
     }
 
     @Override

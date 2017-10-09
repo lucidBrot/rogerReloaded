@@ -114,6 +114,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         // This pending intent will open after notification click
         PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this,
                 MainActivity.class), 0);
+
         // set pending intent to notification builder
         note.setContentIntent(pi);
         Log.d("AntiTheftService", "showing silent Notification");
@@ -130,12 +131,16 @@ public class AntiTheftService extends Service implements AlarmCallback{
         startService(intent);
         Log.d("AntiTheftService", "started Alarm service"); */
 
+        Log.d("AntiTheftService", "started playing Alarm Music");
         if(start) {
-            mediaPlayer_alarm.setLooping(true);
-            mediaPlayer_alarm.start();
+            if(!mediaPlayer_alarm.isPlaying()) {
+                mediaPlayer_alarm.setLooping(true);
+                mediaPlayer_alarm.start();
+            }
         } else {
             mediaPlayer_alarm.stop();
             mediaPlayer_alarm.release();
+            Log.d("AntiTheftService", "stopped playing Alarm Music");
         }
     }
 

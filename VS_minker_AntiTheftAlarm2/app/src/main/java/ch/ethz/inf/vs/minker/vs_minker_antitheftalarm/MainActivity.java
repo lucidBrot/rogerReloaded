@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static int SENSOR_MINE = 1;
     public static int SENSOR_DEFAULT = SENSOR_LINEAR;
     public static Context appcontext;
+    private boolean waschecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         /* ///legacy code
         sensorManager.unregisterListener(spikeMovementDetector);
          */
+        waschecked =((CheckBox) findViewById(R.id.checkBox)).isChecked();
     }
 
     // register sensor again after application being resumed
@@ -105,5 +107,7 @@ public class MainActivity extends AppCompatActivity {
         toast("registered sensor on "+spikeMovementDetector.toString());
         Log.d("a", "registered sensor on "+spikeMovementDetector.toString());
         */
+        ((CheckBox) findViewById(R.id.checkBox)).setChecked(waschecked);
     }
+    
 }
