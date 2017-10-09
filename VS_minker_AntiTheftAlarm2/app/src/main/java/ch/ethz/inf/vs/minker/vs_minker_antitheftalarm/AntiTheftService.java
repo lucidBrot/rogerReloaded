@@ -9,12 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,7 +32,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
     private float delay;
     private int sensitivity ;
     private int phone_taken = 0; // 1 means timer is running, 2 means timer is done and we can alarm and 0 means base state
-
+    private MediaPlayer mediaPlayer_alarm;
 
 
     @Override
@@ -45,6 +44,8 @@ public class AntiTheftService extends Service implements AlarmCallback{
     public int onStartCommand(Intent intent, int flags, int startId){
         silent_mgr = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         showSilentNotification();
+
+        mediaPlayer_alarm = MediaPlayer.create(MainActivity.appcontext, R.raw.alarm);
 
         SharedPreferences sp = getSharedPreferences(getString(R.string.sharedprefs), Context.MODE_PRIVATE);
         sensitivity = sp.getInt("sensitivity", DEFAULT_SENSITIVITY);
@@ -70,16 +71,18 @@ public class AntiTheftService extends Service implements AlarmCallback{
         }
 
         if ( accelerometer == null){
-            Log.e("AntiTheftService", "Sensor is actually null. Device doesn't have that sensor.");
-        } else {
-            sensorManager.registerListener(spikeMovementDetector, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            Log.e("AntiTheftService", "Sensor is actually null. Device doesn't have that sensor. Using MINE instead");
+            sp.edit().putInt("sensor_type", MainActivity.SENSOR_MINE).apply();
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
+
+        sensorManager.registerListener(spikeMovementDetector, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         Log.d("AntiTheftService","started service");
         return START_STICKY;
     }
 
-    private void showNotification() { //TODO: keep sound consistently on in addition to the notification
+    private void showNotification() { //TODO: keep sound consistently on
 
         NotificationCompat.Builder note = new NotificationCompat.Builder(this);
         note.setContentTitle("Device Accelerometer Notification");
@@ -117,9 +120,29 @@ public class AntiTheftService extends Service implements AlarmCallback{
         silent_mgr.notify(NOTIFICATION_ID_SILENT, note.build());
     }
 
+    /**
+     * @param start pass True if this is the first time and the file should be played. If start is False, the Alarm will stop
+     */
+    private void playOrStopAlarm(boolean start){
+        /* /// not working
+        Intent intent = new Intent(MainActivity.appcontext, AlarmPlayerService.class);
+        intent.putExtra("start", start);
+        startService(intent);
+        Log.d("AntiTheftService", "started Alarm service"); */
+
+        if(start) {
+            mediaPlayer_alarm.setLooping(true);
+            mediaPlayer_alarm.start();
+        } else {
+            mediaPlayer_alarm.stop();
+            mediaPlayer_alarm.release();
+        }
+    }
+
     @Override
     public void onDestroy(){
         stahp = true;
+        playOrStopAlarm(false); // stop alarm if playing
         mgr.cancel(NOTIFICATION_ID); //clean up current notifications
         sensorManager.unregisterListener(spikeMovementDetector);
         silent_mgr.cancel(NOTIFICATION_ID_SILENT);
@@ -130,20 +153,21 @@ public class AntiTheftService extends Service implements AlarmCallback{
     public void onDelayStarted() {
 
         if(phone_taken == 0) { // if the protection was never triggered before, wait 5 sec.
+            phone_taken = 1;
             (new Timer()).schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if(!stahp) { showNotification();}
+                    if(!stahp) { Log.d("AntiTheftService", "timer ran first time"); playOrStopAlarm(true);}
                     phone_taken = 2;
                     Log.d("AntiTheftService", "timer ran out!");
                 }
             }, (long) (1000*delay));
-        } else if (phone_taken == 1) { // timer is running, do nothing as the alarm will triger anyways
+        } else if (phone_taken == 1) { // timer is running, do nothing as the alarm will trigger anyways
         } else { // timer is over, do usual alarming unless service stopped
             if (!stahp) {
                 Log.d("AntiTheftService", "onDelayStarted");
                 if (!stahp) {
-                    showNotification();
+                    // continue alarming
                 }
             }
         }
