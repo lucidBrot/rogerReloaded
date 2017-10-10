@@ -26,7 +26,13 @@ public class MainActivity extends AppCompatActivity {
     public static int SENSOR_LINEAR = 0;
     public static int SENSOR_MINE = 1;
     public static int SENSOR_DEFAULT = SENSOR_LINEAR;
-    public static Context appcontext;
+
+    public static Context getAppcontext() {
+        if(appcontext!=null){
+        return appcontext;} else return null;
+    }
+
+    public static Context appcontext = null;
     private boolean waschecked;
     private boolean prefDisabled = false;
 
