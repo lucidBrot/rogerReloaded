@@ -8,6 +8,7 @@ public class MySettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getPreferenceManager().setSharedPreferencesName(getString(R.string.sharedprefs));
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 

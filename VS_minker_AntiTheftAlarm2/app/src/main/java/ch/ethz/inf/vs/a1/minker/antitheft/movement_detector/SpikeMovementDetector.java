@@ -23,7 +23,7 @@ public class SpikeMovementDetector extends AbstractMovementDetector {
     public boolean doAlarmLogic(float[] values) { // return true if device is being stolen
 
         SharedPreferences sp = MainActivity.appcontext.getSharedPreferences(MainActivity.appcontext.getString(R.string.sharedprefs), Context.MODE_PRIVATE);
-        int sensor = sp.getInt("sensor_type", MainActivity.SENSOR_DEFAULT);
+        int sensor = Integer.valueOf(sp.getString(MainActivity.appcontext.getString(R.string.key_SENSOR_LIST), String.valueOf(MainActivity.SENSOR_DEFAULT)));
         if (sensor == MainActivity.SENSOR_MINE) {
 
             // own sensor implementation

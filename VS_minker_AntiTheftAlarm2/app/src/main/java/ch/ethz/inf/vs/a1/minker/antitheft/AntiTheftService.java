@@ -16,6 +16,7 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import ch.ethz.inf.vs.a1.minker.antitheft.movement_detector.SpikeMovementDetector;
 
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,20 +54,25 @@ public class AntiTheftService extends Service implements AlarmCallback{
         mediaPlayer_alarm = MediaPlayer.create(MainActivity.appcontext, R.raw.alarm);
 
         SharedPreferences sp = getSharedPreferences(getString(R.string.sharedprefs), Context.MODE_PRIVATE);
-        sensitivity = sp.getInt("sensitivity", DEFAULT_SENSITIVITY);
-        delay = sp.getFloat("delay", DEFAULT_DELAY);
+        sensitivity = Integer.valueOf(sp.getString("sensitivity", String.valueOf(DEFAULT_SENSITIVITY)));
+        //TODO: check everywhere where I access settings if it's correctly string instead of int.
+        //TODO: breakpoints here to debug.
+        delay = Integer.valueOf(sp.getString("delay", String.valueOf(DEFAULT_DELAY)));
         Log.d("g", "set sensitivity "+sensitivity+" and delay "+delay+" seconds.");
 
         mgr = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        MainActivity.debugMyPrefs(sp);
+
         // only register the sensor we need
+        // transforming everything into strings because the preferences we're told to use don't feature Integer values
         sensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
         spikeMovementDetector = new SpikeMovementDetector(this, sensitivity);
-        if (sp.getInt("sensor_type", MainActivity.SENSOR_DEFAULT) == MainActivity.SENSOR_MINE ) {
+        if (sp.getString(getString(R.string.key_SENSOR_LIST), String.valueOf(MainActivity.SENSOR_DEFAULT)).equals(String.valueOf(MainActivity.SENSOR_MINE)) ) {
             Log.d("AntiTheftService", "setting up MINE sensor");
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
-        else if (sp.getInt("sensor_type", MainActivity.SENSOR_DEFAULT) == MainActivity.SENSOR_LINEAR){
+        else if (sp.getString(getString(R.string.key_SENSOR_LIST), String.valueOf(MainActivity.SENSOR_DEFAULT)).equals(String.valueOf(MainActivity.SENSOR_LINEAR))){
             Log.d("AntiTheftService", "setting up LINEAR sensor");
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         }
@@ -77,7 +83,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
 
         if ( accelerometer == null){
             Log.e("AntiTheftService", "Sensor is actually null. Device doesn't have that sensor. Using MINE instead");
-            sp.edit().putInt("sensor_type", MainActivity.SENSOR_MINE).apply();
+            sp.edit().putString(getString(R.string.key_SENSOR_LIST), String.valueOf(MainActivity.SENSOR_MINE)).apply();
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
 
@@ -138,6 +144,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         Log.d("AntiTheftService", "started Alarm service"); */
 
         Log.d("AntiTheftService", "started playing Alarm Music");
+
         if(start) {
             if(!mediaPlayer_alarm.isPlaying()) {
                 mediaPlayer_alarm.setLooping(true);
@@ -148,6 +155,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
             }
         } else {
             mediaPlayer_alarm.stop();
+            mediaPlayer_alarm.reset();
             mediaPlayer_alarm.release();
             Log.d("AntiTheftService", "stopped playing Alarm Music");
         }

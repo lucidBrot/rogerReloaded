@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.SensorManager;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
 import ch.ethz.inf.vs.a1.minker.antitheft.movement_detector.SpikeMovementDetector;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO: load default preferences on first app launch
-        //PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        //load default preferences on first app launch
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         appcontext = getApplicationContext();
 
@@ -39,9 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
         // store what sensor to use
         SharedPreferences sp = getSharedPreferences(getString(R.string.sharedprefs), Context.MODE_PRIVATE);
-        SharedPreferences.Editor sped = sp.edit();
-        sped.putInt("sensor_type", SENSOR_DEFAULT);
-        sped.apply();
+        String getsensor = sp.getString(getString(R.string.key_SENSOR_LIST), "unset");
+        Log.d("p","Default loaded from preferences is sensor: "+getsensor);
+        if(getsensor.equals("unset")){
+            // need to set preference if sensor not yet set
+            SharedPreferences.Editor sped = sp.edit();
+            sped.putString(getString(R.string.key_SENSOR_LIST), String.valueOf(SENSOR_DEFAULT));
+            sped.apply();
+        } // else { // it's already set. great.
 
         final CheckBox onoff = findViewById(R.id.checkBox);
         onoff.setChecked(false);
@@ -76,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.settings_menu_item:
                 Intent i = new Intent(this,SettingActivity.class);
+                Log.d("p", "Opening Settings Activity: Current sensor is "+MainActivity.this.getSharedPreferences(getString(R.string.sharedprefs), Context.MODE_PRIVATE).getString(getString(R.string.key_SENSOR_LIST), "unset"));
                 this.startActivity(i);
                 return true;
             default:
@@ -110,4 +119,23 @@ public class MainActivity extends AppCompatActivity {
         ((CheckBox) findViewById(R.id.checkBox)).setChecked(waschecked);
     }
 
+    public static void debugMyPrefs(SharedPreferences sp){
+        //DEBUG
+        Map<String,?> keys = sp.getAll();
+
+        for(Map.Entry<String,?> entry : keys.entrySet())
+        {
+            Log.d("q/map values", entry.getKey() + ": " + entry.getValue().toString());
+            Log.d("q/data type", entry.getValue().getClass().toString());
+
+            if ( entry.getValue().getClass().equals(String.class))
+                Log.d("q/data type", "String");
+            else if ( entry.getValue().getClass().equals(Integer.class))
+                Log.d("q/data type", "Integer");
+            else if ( entry.getValue().getClass().equals(Boolean.class))
+                Log.d("q/data type", "boolean");
+
+        }
+        //ENDDEBUG
+    }
 }
