@@ -145,7 +145,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         Log.d("AntiTheftService", "started Alarm service"); */
 
 
-
+        //showNotification();
         if (mediaPlayer_alarm == null){
             Log.e("AntiTheftService", "MediaPlayer is null...");
             return;

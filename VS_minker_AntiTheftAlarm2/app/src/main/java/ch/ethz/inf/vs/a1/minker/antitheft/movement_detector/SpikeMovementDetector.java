@@ -87,6 +87,7 @@ public class SpikeMovementDetector extends AbstractMovementDetector {
                 return false;
             }
         } catch (NullPointerException n) { // if testing, just use LINEAR
+            Log.d("TESTING", "We're in the testing area. intended?");
             float sum = 0;
             for (int i = 0; i < 3; i++) {
                 sum += values[i]*(values[i]>0?1:-1);
