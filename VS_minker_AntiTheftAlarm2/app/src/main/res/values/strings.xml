@@ -8,7 +8,7 @@
     <string name="one">One</string>
     <string name="sharedprefs">sharedprefs</string>
     <string name="delay">delay [s]</string>
-    <string name="sensitivity">sensitivity</string>
+    <string name="sensitivity">inverse sensitivity</string>
     <string name="key_sensitivity">sensitivity</string>
     <string name="key_delay">delay</string>
     <string name="defaultDelay">2</string>

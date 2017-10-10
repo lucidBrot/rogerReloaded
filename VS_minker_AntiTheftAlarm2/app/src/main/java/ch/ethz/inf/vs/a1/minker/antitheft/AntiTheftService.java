@@ -57,7 +57,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         sensitivity = Integer.valueOf(sp.getString("sensitivity", String.valueOf(DEFAULT_SENSITIVITY)));
         //TODO: check everywhere where I access settings if it's correctly string instead of int.
         //TODO: breakpoints here to debug.
-        delay = Integer.valueOf(sp.getString("delay", String.valueOf(DEFAULT_DELAY)));
+        delay = Float.valueOf(sp.getString("delay", String.valueOf(DEFAULT_DELAY)));
         Log.d("g", "set sensitivity "+sensitivity+" and delay "+delay+" seconds.");
 
         mgr = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -68,11 +68,11 @@ public class AntiTheftService extends Service implements AlarmCallback{
         // transforming everything into strings because the preferences we're told to use don't feature Integer values
         sensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
         spikeMovementDetector = new SpikeMovementDetector(this, sensitivity);
-        if (sp.getString(getString(R.string.key_SENSOR_LIST), String.valueOf(MainActivity.SENSOR_DEFAULT)).equals(String.valueOf(MainActivity.SENSOR_MINE)) ) {
+        if (sp.getString(getString(R.string.key_SENSOR_LIST), "unset").equals(String.valueOf(MainActivity.SENSOR_MINE)) ) {
             Log.d("AntiTheftService", "setting up MINE sensor");
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
-        else if (sp.getString(getString(R.string.key_SENSOR_LIST), String.valueOf(MainActivity.SENSOR_DEFAULT)).equals(String.valueOf(MainActivity.SENSOR_LINEAR))){
+        else if (sp.getString(getString(R.string.key_SENSOR_LIST), "unset").equals(String.valueOf(MainActivity.SENSOR_LINEAR))){
             Log.d("AntiTheftService", "setting up LINEAR sensor");
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         }
@@ -143,9 +143,15 @@ public class AntiTheftService extends Service implements AlarmCallback{
         startService(intent);
         Log.d("AntiTheftService", "started Alarm service"); */
 
-        Log.d("AntiTheftService", "started playing Alarm Music");
+
+
+        if (mediaPlayer_alarm == null){
+            Log.e("AntiTheftService", "MediaPlayer is null...");
+            return;
+        }
 
         if(start) {
+            Log.d("AntiTheftService", "started playing Alarm Music");
             if(!mediaPlayer_alarm.isPlaying()) {
                 mediaPlayer_alarm.setLooping(true);
                     AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);

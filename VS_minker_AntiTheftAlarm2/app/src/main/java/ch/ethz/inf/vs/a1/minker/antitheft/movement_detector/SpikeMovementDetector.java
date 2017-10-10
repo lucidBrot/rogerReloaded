@@ -24,6 +24,8 @@ public class SpikeMovementDetector extends AbstractMovementDetector {
 
         SharedPreferences sp = MainActivity.appcontext.getSharedPreferences(MainActivity.appcontext.getString(R.string.sharedprefs), Context.MODE_PRIVATE);
         int sensor = Integer.valueOf(sp.getString(MainActivity.appcontext.getString(R.string.key_SENSOR_LIST), String.valueOf(MainActivity.SENSOR_DEFAULT)));
+        sensor = Integer.parseInt(sp.getString(MainActivity.appcontext.getString(R.string.key_SENSOR_LIST), "-1"));
+        if(sensor == -1) {Log.d("f", "why is this shit not set!?");} // else {Log.d("f", "doAlarmLogic: sensor is "+String.valueOf(sensor));}
         if (sensor == MainActivity.SENSOR_MINE) {
 
             // own sensor implementation

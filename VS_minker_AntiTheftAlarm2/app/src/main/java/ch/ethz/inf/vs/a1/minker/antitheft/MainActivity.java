@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
             // need to set preference if sensor not yet set
             SharedPreferences.Editor sped = sp.edit();
             sped.putString(getString(R.string.key_SENSOR_LIST), String.valueOf(SENSOR_DEFAULT));
+            Log.d("f", "set sensor back to default.");
             sped.apply();
         } // else { // it's already set. great.
 

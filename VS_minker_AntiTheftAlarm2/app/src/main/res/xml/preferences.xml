@@ -10,6 +10,7 @@
                         android:key="@string/key_sensitivity"
                         android:title="@string/sensitivity" />
     </PreferenceCategory>
+    
     <PreferenceCategory android:title="Sensor">
         <ListPreference android:key="@string/key_SENSOR_LIST"
                         android:title="Choose Sensor"
