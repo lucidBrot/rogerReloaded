@@ -12,6 +12,7 @@ import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.preference.PreferenceScreen;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import ch.ethz.inf.vs.a1.minker.antitheft.movement_detector.SpikeMovementDetector;
@@ -55,8 +56,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
 
         SharedPreferences sp = getSharedPreferences(getString(R.string.sharedprefs), Context.MODE_PRIVATE);
         sensitivity = Integer.valueOf(sp.getString("sensitivity", String.valueOf(DEFAULT_SENSITIVITY)));
-        //TODO: check everywhere where I access settings if it's correctly string instead of int.
-        //TODO: breakpoints here to debug.
+
         delay = Float.valueOf(sp.getString("delay", String.valueOf(DEFAULT_DELAY)));
         Log.d("g", "set sensitivity "+sensitivity+" and delay "+delay+" seconds.");
 
@@ -92,6 +92,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
         Log.d("AntiTheftService","started service");
         return START_STICKY;
     }
+
 
     private void showNotification() {
 

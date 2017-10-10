@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.SensorManager;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public static int SENSOR_DEFAULT = SENSOR_LINEAR;
     public static Context appcontext;
     private boolean waschecked;
+    private boolean prefDisabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +63,12 @@ public class MainActivity extends AppCompatActivity {
                 CheckBox checkBox = (CheckBox) view;
                 if (checkBox.isChecked()){
                     Log.d("d", "starting service");
+                    prefDisabled = true;
                     startService(intent);
                     checkBox.setText(R.string.on);
                 } else {
                     Log.d("d", "stopping service");
+                    prefDisabled = false;
                     stopService(intent);
                     checkBox.setText(R.string.off);
                 }
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.settings_menu_item:
                 Intent i = new Intent(this,SettingActivity.class);
+                i.putExtra("prefEnabled", !prefDisabled);
                 Log.d("p", "Opening Settings Activity: Current sensor is "+MainActivity.this.getSharedPreferences(getString(R.string.sharedprefs), Context.MODE_PRIVATE).getString(getString(R.string.key_SENSOR_LIST), "unset"));
                 this.startActivity(i);
                 return true;

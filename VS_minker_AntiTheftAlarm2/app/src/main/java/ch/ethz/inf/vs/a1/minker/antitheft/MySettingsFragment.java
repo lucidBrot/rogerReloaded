@@ -8,11 +8,14 @@ public class MySettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        boolean prefEnabled = getArguments().getBoolean("prefEnabled");
         getPreferenceManager().setSharedPreferencesName(getString(R.string.sharedprefs));
+
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-        //TODO: enable choosing of sensor
+        getPreferenceScreen().setEnabled(prefEnabled);
+
         //TODO: enable choosing of sensor only if that sensor exists
     }
 }

@@ -11,10 +11,14 @@ import android.widget.Toast;
 
 public class SettingActivity extends AppCompatActivity{
 
+    private boolean prefEnabled = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.empty);
+
+        prefEnabled = this.getIntent().getBooleanExtra("prefEnabled", prefEnabled);
 
         /*
         Button btn = findViewById(R.id.confirm_btn);
@@ -46,10 +50,16 @@ public class SettingActivity extends AppCompatActivity{
         ((EditText) findViewById(R.id.editText2)).setHint("current: "+delay);
         ((EditText) findViewById(R.id.editText3)).setHint("current: "+sensitivity); */
 
+
+        Bundle args = new Bundle();
+        args.putBoolean("prefEnabled", prefEnabled);
+        MySettingsFragment f = new MySettingsFragment();
+        f.setArguments(args);
         // Display the fragment as the main content.
         getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new MySettingsFragment())
+                .replace(android.R.id.content, f)
                 .commit();
+
     }
 
     private void toast(String msg){

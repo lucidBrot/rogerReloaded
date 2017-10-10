@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/prefscreen">
     <PreferenceCategory android:title="Details">
     <EditTextPreference android:inputType="number"
                     android:defaultValue="@string/defaultDelay"
@@ -10,7 +11,7 @@
                         android:key="@string/key_sensitivity"
                         android:title="@string/sensitivity" />
     </PreferenceCategory>
-    
+
     <PreferenceCategory android:title="Sensor">
         <ListPreference android:key="@string/key_SENSOR_LIST"
                         android:title="Choose Sensor"
