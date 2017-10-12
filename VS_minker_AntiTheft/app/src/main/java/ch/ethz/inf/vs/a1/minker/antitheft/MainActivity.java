@@ -85,10 +85,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 CheckBox checkBox = (CheckBox) view;
+
                 if (checkBox.isChecked()){
                     Log.d("d", "starting service");
                     prefDisabled = true;
-                    startService(intent);
+                    Thread t = new Thread(){
+                        public void run(){
+                            startService(intent);
+                        }
+                    };
+                    t.start();
+                    ///startService(intent);
                     checkBox.setText(R.string.on);
                 } else {
                     Log.d("d", "stopping service");
