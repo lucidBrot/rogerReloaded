@@ -1,8 +1,10 @@
 package ch.ethz.inf.vs.a1.minker.antitheft;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.hardware.SensorManager;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public static int SENSOR_LINEAR = 0;
     public static int SENSOR_MINE = 1;
     public static int SENSOR_DEFAULT = SENSOR_LINEAR;
+    private static Intent myTheftIntent = null;
 
     public static Context getAppcontext() {
         if(appcontext!=null){
@@ -45,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         appcontext = getApplicationContext();
+/* // Tried to fix rotational bug. now just making it impossible to happen instead
+        if(myTheftIntent == null){
+            myTheftIntent = new Intent(this, AntiTheftService.class);
+        }
+        final Intent intent = myTheftIntent;
+        */
+        super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
 
         final Intent intent = new Intent(this, AntiTheftService.class);
 
@@ -61,6 +71,14 @@ public class MainActivity extends AppCompatActivity {
         } // else { // it's already set. great.
 
         final CheckBox onoff = findViewById(R.id.checkBox);
+
+        /*
+        if(!isMyServiceRunning(AntiTheftService.class)) { Log.d("service", "service not running");
+        toast("service not running");
+         onoff.setChecked(false); } else {
+            Log.d("service", "service iiiis running");
+            toast("service running");
+            onoff.setChecked(true);} */
         onoff.setChecked(false);
 
         onoff.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +99,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
