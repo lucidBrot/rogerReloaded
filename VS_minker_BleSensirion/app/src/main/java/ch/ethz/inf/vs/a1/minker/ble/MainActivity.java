@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mLEScanner.stopScan(resultCallback);
-
+        if(!(mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) && mLEScanner != null)
+            mLEScanner.stopScan(resultCallback);
     }
 }

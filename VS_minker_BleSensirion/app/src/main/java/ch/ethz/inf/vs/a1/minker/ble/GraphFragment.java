@@ -42,7 +42,7 @@ public class GraphFragment extends Fragment {
     LineGraphSeries<DataPoint> humiditySeries = new LineGraphSeries<>();
     LineGraphSeries<DataPoint> temperatureSeries = new LineGraphSeries<>();
 
-    private static final int MAX_DATAPOINTS = 100;
+    private static final int MAX_DATAPOINTS = 70;
 
     private BluetoothGatt mGatt;
 
@@ -185,7 +185,7 @@ public class GraphFragment extends Fragment {
             graph.addSeries(humiditySeries);
             graph.addSeries(temperatureSeries);
             graph.getViewport().setMinX(0);
-            graph.getViewport().setMaxX(20);
+            graph.getViewport().setMaxX(60);
             connection_state = (LinearLayout) getView().findViewById(R.id.connect_state);
             if(connected)
                 connection_state.setVisibility(View.INVISIBLE);
