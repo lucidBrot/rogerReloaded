@@ -10,13 +10,16 @@ import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private ScanSettings settings;
     private ScanCallback resultCallback;
     private ProgressBar scanBar;
+    private AlertDialog.Builder locationAlert;
+    private LocationManager locationManager;
 
     private ArrayAdapter<String> devicesAdapter;
     private ArrayList<BluetoothDevice> foundDevices = new ArrayList<BluetoothDevice>();
@@ -69,10 +74,33 @@ public class MainActivity extends AppCompatActivity {
         mBluetoothAdapter = bluetoothManager.getAdapter();
 
 
-        if(mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()){
-            Intent enableBtintent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtintent, REQUEST_ENABLE_BT);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            locationAlert = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Dialog_Alert);
+        } else {
+            locationAlert = new AlertDialog.Builder(this);
         }
+
+
+
+        locationAlert.setTitle("Location Service Enable")
+                .setMessage("In order to scan for Bluetooth Low Energy Devices you have to activate Location Service")
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent enableLocation = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(enableLocation, REQUEST_ENABLE_LOC);
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
 
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
@@ -94,10 +122,7 @@ public class MainActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
-                    Intent enableBtintent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(enableBtintent, REQUEST_ENABLE_BT);
-                } else {
+                if(!requestPermissions(true, false)){
                     mLEScanner.stopScan(resultCallback);
                     Intent nextActivity = new Intent(parent.getContext(), ConnectionActivity.class).putExtra("device", foundDevices.get(position));
                     startActivity(nextActivity);
@@ -152,10 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 //Toast.makeText(this, "Button Clicked", Toast.LENGTH_LONG).show();
-                if(mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()){
-                    Intent enableBtintent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(enableBtintent, REQUEST_ENABLE_BT);
-                } else {
+                if(!requestPermissions()){
                     if (mLEScanner == null){
                         mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
                     }
@@ -172,9 +194,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        requestPermissions();
+    }
 
+    private boolean requestPermissions(){
+        return requestPermissions(true, true);
+    }
 
+    private boolean requestPermissions(boolean checkBluetooth, boolean checkLocation){
+        boolean neededPermission = false;
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && checkLocation){
+            locationAlert.show();
+            neededPermission = true;
+        }
 
+        if((mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) && checkBluetooth){
+            Intent enableBtintent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtintent, REQUEST_ENABLE_BT);
+            neededPermission = true;
+        }
+        return  neededPermission;
     }
 
     @Override
