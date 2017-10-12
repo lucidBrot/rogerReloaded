@@ -201,4 +201,9 @@ public class AntiTheftService extends Service implements AlarmCallback{
             }
         }
     }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent){
+        stopSelf();
+    }
 }
