@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">VS_minker_BleSensirion</string>
+    <string name="yes">Activate</string>
+    <string name="no">Don\'t</string>
+</resources>
