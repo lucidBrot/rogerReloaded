@@ -6,37 +6,4 @@
     android:layout_height="match_parent"
     tools:context="ch.ethz.inf.vs.a1.minker.ble.ConnectionActivity"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:id="@+id/connect_state"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_margin="7dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:text="Connecting"
-            android:textSize="18sp"
-            tools:layout_editor_absoluteX="82dp"
-            tools:layout_editor_absoluteY="33dp" />
-
-    </LinearLayout>
-
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/data_graph"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 </LinearLayout>
