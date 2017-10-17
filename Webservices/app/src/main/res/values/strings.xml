@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Webservices</string>
+    <string name="group_name">minker</string>
+    <string name="temperature_sensor">Temperature Sensor</string>
+</resources>
