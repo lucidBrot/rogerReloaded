@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Webservices</string>
+    <string name="nethz">minker</string>
+    <string name="main_button1">task1</string>
+    <string name="main_button2">task2</string>
+    <string name="main_button3">task3</string>
+</resources>
