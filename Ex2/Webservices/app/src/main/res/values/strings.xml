@@ -5,5 +5,7 @@
     <string name="task2Button">Task 2</string>
     <string name="temperature_display_default">none</string>
     <string name="t2_temperature_display_default">none</string>
-    <string name="t2_temperature">Temperature: </string>
+    <string name="t2_temperature">Temperature:</string>
+    <string name="library">Library</string>
+    <string name="manual">Manual</string>
 </resources>
