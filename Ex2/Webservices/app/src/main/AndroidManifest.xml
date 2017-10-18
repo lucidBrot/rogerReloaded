@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".TemperatureSensorActivity"></activity>
+
+        <activity android:name=".Task2Activity"></activity>
     </application>
 
 </manifest>

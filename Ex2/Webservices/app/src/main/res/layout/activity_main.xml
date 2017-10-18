@@ -9,7 +9,7 @@
 
     <Button
         android:id="@+id/buttonTask1"
-        android:text="Temperature Sensor"
+        android:text="@string/temperature_sensor"
         android:onClick="startTemperatureSensorActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -17,7 +17,9 @@
     <Button
         android:id="@+id/buttonTask2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/task2Button"
+        android:onClick="startTask2Activity"/>
 
     <Button
         android:id="@+id/buttonTask3"

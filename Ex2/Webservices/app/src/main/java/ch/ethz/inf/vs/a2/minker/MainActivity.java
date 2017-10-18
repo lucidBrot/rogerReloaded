@@ -19,4 +19,9 @@ public class MainActivity extends AppCompatActivity {
         //SensorActivity.putExtra("SensorIndex", activeSensor);
         this.startActivity(SensorActivity);
     }
+
+    public void startTask2Activity(View view){
+        Intent task2Intent = new Intent(MainActivity.this, Task2Activity.class);
+        MainActivity.this.startActivity(task2Intent);
+    }
 }
