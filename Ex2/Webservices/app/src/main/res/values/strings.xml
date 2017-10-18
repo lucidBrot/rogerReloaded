@@ -3,4 +3,7 @@
     <string name="group_name">minker</string>
     <string name="temperature_sensor">Task 1</string>
     <string name="task2Button">Task 2</string>
+    <string name="temperature_display_default">none</string>
+    <string name="t2_temperature_display_default">none</string>
+    <string name="t2_temperature">Temperature: </string>
 </resources>
