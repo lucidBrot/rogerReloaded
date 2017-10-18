@@ -8,16 +8,21 @@
     tools:context="ch.ethz.inf.vs.a2.minker.TemperatureSensorActivity">
 
     <TextView
-        android:id="@+id/textViewRaw"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/textViewTextURL"
-        android:layout_width="wrap_content"
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/textViewJSON"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="refresh"
+        android:text="Reload Value" />
+
 
 </LinearLayout>

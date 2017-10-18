@@ -35,7 +35,7 @@ public class RawHttpSensor extends AbstractSensor {
             pw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(MyClient.getInputStream()));
             String t;
-            while((t = br.readLine()) != null) {out += t;}
+            while((t = br.readLine()) != null) {out += t + "\r\n";}
             br.close();
             return out;
         }
