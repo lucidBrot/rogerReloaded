@@ -6,11 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import ch.ethz.inf.vs.a2.minker.sensor.AbstractSensor;
 
 public class Task2Activity extends AppCompatActivity implements ch.ethz.inf.vs.a2.minker.sensor.SensorListener, View.OnClickListener {
 
     private XmlSensor xmlSensorM;
     private SoapSensor soapSensorL;
+    private boolean currSensorIsM;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +21,9 @@ public class Task2Activity extends AppCompatActivity implements ch.ethz.inf.vs.a
         findViewById(R.id.t2_btnLibrary).setOnClickListener(this);
         xmlSensorM = new XmlSensor();
         xmlSensorM.registerListener(this);
+        soapSensorL = new SoapSensor();
+        // soapSensorL.registerListener(this);
+        currSensorIsM = true;
 
         xmlSensorM.getTemperature();
 
@@ -52,9 +57,20 @@ public class Task2Activity extends AppCompatActivity implements ch.ethz.inf.vs.a
         switch (view.getId()){
             case R.id.t2_btnManual:
                 Log.d("Task2/onClick","clicked manual button");
+                // un- and reregistering is not neccessary, but in case some sensor were to send messages - I don't care about them if I use the other one
+                if(!currSensorIsM){
+                    soapSensorL.unregisterListener(this);
+                    xmlSensorM.registerListener(this);
+                    currSensorIsM = true;
+                }
                 xmlSensorM.getTemperature();
                 break;
             case R.id.t2_btnLibrary:
+                if(currSensorIsM){
+                    xmlSensorM.unregisterListener(this);
+                    soapSensorL.registerListener(this);
+                    currSensorIsM = false;
+                }
                 soapSensorL.getTemperature();
                 break;
         }

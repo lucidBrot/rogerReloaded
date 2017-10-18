@@ -30,7 +30,7 @@ public class SoapSensor extends AbstractSensor {
         SoapObject so = (SoapObject) envelope.getResponse();
         Log.d("Task2/SoapSensor", "response: "+so.toString());
 
-        return null;
+        return so.toString();
     }
 
     // Code by Sashen Govender
