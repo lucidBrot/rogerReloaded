@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">VS_minker_AntiTheftAlarm</string>
+    <string name="on">Service On</string>
+    <string name="off">Service Off</string>
+    <string name="settings">settings</string>
+    <string name="Three">Three</string>
+    <string name="two">Two</string>
+    <string name="one">One</string>
+    <string name="sharedprefs">sharedprefs</string>
+    <string name="delay">delay [s]</string>
+    <string name="sensitivity">inverse sensitivity</string>
+    <string name="key_sensitivity">sensitivity</string>
+    <string name="key_delay">delay</string>
+    <string name="defaultDelay">2</string>
+    <string name="defaultSensitivity">1</string>
+    <string name="key_SENSOR_LIST">key_SENSOR_LIST</string>
+</resources>

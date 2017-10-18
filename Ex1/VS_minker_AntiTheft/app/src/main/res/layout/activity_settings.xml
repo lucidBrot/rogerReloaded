@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/top_settings"
+        tools:context="ch.ethz.inf.vs.a1.minker.antitheft.MainActivity">
+
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_weight="0.44">
+        <TextView
+                android:text="sensitivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView" android:layout_weight="1"/>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editText3" android:layout_weight="1" android:hint="default: 1"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_weight="0.44">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView2" android:layout_weight="1"
+                android:text="delay in seconds"/>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editText2" android:layout_weight="1" android:hint="in seconds"/>
+    </LinearLayout>
+    <Button
+            android:text="confirm changes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/confirm_btn" android:layout_weight="0"/>
+</LinearLayout>

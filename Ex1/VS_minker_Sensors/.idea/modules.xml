@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/VS_minker_Sensors.iml" filepath="$PROJECT_DIR$/VS_minker_Sensors.iml" />
+      <module fileurl="file://G:/Systemordner/Dokumente/rogerReloaded/VS_minker_Sensors/VS_minker_Sensors/VS_minker_Sensors.iml" filepath="G:/Systemordner/Dokumente/rogerReloaded/VS_minker_Sensors/VS_minker_Sensors/VS_minker_Sensors.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://G:/Systemordner/Dokumente/rogerReloaded/VS_minker_Sensors/VS_minker_Sensors/app/app.iml" filepath="G:/Systemordner/Dokumente/rogerReloaded/VS_minker_Sensors/VS_minker_Sensors/app/app.iml" />
+    </modules>
+  </component>
+</project>
