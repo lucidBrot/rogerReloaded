@@ -53,7 +53,11 @@ public class SoapSensor extends AbstractSensor {
 
     @Override
     public double parseResponse(String response) {
-
-        return Double.valueOf(response);
+        try {
+            return Double.valueOf(response);
+        } catch (NumberFormatException e){
+            Log.e("Task2/SoapSensor", "Invalid double: "+response);
+            return Double.NaN;
+        }
     }
 }
