@@ -56,6 +56,7 @@ public class RESTServerService extends Service {
 
 
     private RESTUrlMapper mapper;
+    private NotificationManager notificationManager;
 
     class LocalBinder extends Binder {
         RESTServerService getService() {
@@ -114,6 +115,7 @@ public class RESTServerService extends Service {
         logAdapter = new ArrayAdapter<String>(this, R.layout.log_entry);
         mapper = new RESTUrlMapper();
         sensorList = new ArrayList<>();
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         registerEndpoints();
     }
 
@@ -221,7 +223,7 @@ public class RESTServerService extends Service {
             serverSocket = new ServerSocket();
             serverSocket.bind(new InetSocketAddress(port));
             new Thread(serviceThread).start();
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
             PendingIntent intent = PendingIntent.getActivity(this, 0, new Intent(this, RESTServerActivity.class), 0);
             Notification notification = new Notification.Builder(this).setContentTitle("Webserver running")
                     .setContentText("Webserver running")
@@ -229,6 +231,7 @@ public class RESTServerService extends Service {
                     .setTicker("Webserver running")
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentIntent(intent)
+                    .setOngoing(true)
                     .build();
             notificationManager.notify(NOTIFICATION_ID, notification);
         } catch (IOException e) {
@@ -242,6 +245,7 @@ public class RESTServerService extends Service {
         super.onDestroy();
         try {
             serverSocket.close();
+            notificationManager.cancelAll();
         } catch (Exception e) {
             Log.e(TAG, "Failed to close ServerSocket");
             e.printStackTrace();
