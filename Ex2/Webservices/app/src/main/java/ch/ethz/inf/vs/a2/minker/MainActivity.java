@@ -24,4 +24,9 @@ public class MainActivity extends AppCompatActivity {
         Intent task2Intent = new Intent(MainActivity.this, Task2Activity.class);
         MainActivity.this.startActivity(task2Intent);
     }
+
+    public void startRESTServer(View view){
+        Intent serverIntent = new Intent(MainActivity.this, RESTServerActivity.class);
+        MainActivity.this.startActivity(serverIntent);
+    }
 }

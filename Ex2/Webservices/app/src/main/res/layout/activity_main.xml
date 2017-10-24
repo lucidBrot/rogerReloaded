@@ -24,6 +24,8 @@
     <Button
         android:id="@+id/buttonTask3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:onClick="startRESTServer"
+        android:text="Task 3" />
 
 </LinearLayout>

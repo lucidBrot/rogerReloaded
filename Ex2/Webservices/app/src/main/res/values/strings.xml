@@ -8,4 +8,8 @@
     <string name="t2_temperature">Temperature:</string>
     <string name="library">Library</string>
     <string name="manual">Manual</string>
+    <string name="start_service_button">Start Service</string>
+    <string name="stop_service_button">Stop Service</string>
+    <string name="uri_key">uri</string>
+    <string name="method_key">method</string>
 </resources>
