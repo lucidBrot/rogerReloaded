@@ -1,5 +1,8 @@
 package ch.ethz.inf.vs.a2.minker;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -48,24 +51,37 @@ public class TemperatureSensorActivity extends AppCompatActivity implements Sens
 
         //init with rawHttpSensor, becasue it's the first item in the list and the default selected one
         myRawHttpSensor.registerListener(this);
-        myRawHttpSensor.getTemperature();
+        if(isNetworkAvailable()) {
+            myRawHttpSensor.getTemperature();
+        }else{
+            sensorValuesTextView.setText("No Internet Connection Available.");
+        }
 
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public void refresh(View view){
-
-        switch (itemSelected){
-            case 0:
-                myRawHttpSensor.getTemperature();
-                break;
-            case 1:
-                myTextSensor.getTemperature();
-                break;
-            case 2:
-                myJSONSensor.getTemperature();
-                break;
+        if(isNetworkAvailable()) {
+            switch (itemSelected) {
+                case 0:
+                    myRawHttpSensor.getTemperature();
+                    break;
+                case 1:
+                    myTextSensor.getTemperature();
+                    break;
+                case 2:
+                    myJSONSensor.getTemperature();
+                    break;
+            }
+        }else{
+            sensorValuesTextView.setText("No Internet Connection Available.");
         }
-
     }
 
     @Override
