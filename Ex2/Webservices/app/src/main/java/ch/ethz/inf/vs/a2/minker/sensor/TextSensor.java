@@ -55,6 +55,7 @@ public class TextSensor extends AbstractSensor {
 
     @Override
     public double parseResponse(String response) {
-        return Double.valueOf(response);
+        if(response != null && !response.equals("")){return Double.valueOf(response);}
+        else { return Double.NaN; }
     }
 }

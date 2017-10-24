@@ -1,5 +1,8 @@
 package ch.ethz.inf.vs.a2.minker;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +23,7 @@ public class TemperatureSensorActivity extends AppCompatActivity implements Sens
     private RawHttpSensor myRawHttpSensor;
     private TextSensor myTextSensor;
     private JsonSensor myJSONSensor;
+    private CharSequence sensorTextTemp;
 
     int itemSelected;
 
@@ -47,21 +51,36 @@ public class TemperatureSensorActivity extends AppCompatActivity implements Sens
 
         //init with rawHttpSensor, becasue it's the first item in the list and the default selected one
         myRawHttpSensor.registerListener(this);
-        myRawHttpSensor.getTemperature();
+        if(isNetworkAvailable()) {
+            myRawHttpSensor.getTemperature();
+        }else{
+            sensorValuesTextView.setText("No Internet Connection Available.");
+        }
 
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public void refresh(View view){
-        switch (itemSelected){
-            case 0:
-                myRawHttpSensor.getTemperature();
-                break;
-            case 1:
-                myTextSensor.getTemperature();
-                break;
-            case 2:
-                myJSONSensor.getTemperature();
-                break;
+        if(isNetworkAvailable()) {
+            switch (itemSelected) {
+                case 0:
+                    myRawHttpSensor.getTemperature();
+                    break;
+                case 1:
+                    myTextSensor.getTemperature();
+                    break;
+                case 2:
+                    myJSONSensor.getTemperature();
+                    break;
+            }
+        }else{
+            sensorValuesTextView.setText("No Internet Connection Available.");
         }
     }
 
@@ -89,39 +108,40 @@ public class TemperatureSensorActivity extends AppCompatActivity implements Sens
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        switch (i){
-            case 0:
-                //unregister all
-                myRawHttpSensor.unregisterListener(this);
-                myTextSensor.unregisterListener(this);
-                myJSONSensor.unregisterListener(this);
-                //reregister the new one
-                myRawHttpSensor.registerListener(this);
+            switch (i) {
+                case 0:
+                    //unregister all
+                    myRawHttpSensor.unregisterListener(this);
+                    myTextSensor.unregisterListener(this);
+                    myJSONSensor.unregisterListener(this);
+                    //reregister the new one
+                    myRawHttpSensor.registerListener(this);
 
-                break;
-            case 1:
-                //unregister all
-                myRawHttpSensor.unregisterListener(this);
-                myTextSensor.unregisterListener(this);
-                myJSONSensor.unregisterListener(this);
-                //reregister the new one
-                myTextSensor.registerListener(this);
+                    break;
+                case 1:
+                    //unregister all
+                    myRawHttpSensor.unregisterListener(this);
+                    myTextSensor.unregisterListener(this);
+                    myJSONSensor.unregisterListener(this);
+                    //reregister the new one
+                    myTextSensor.registerListener(this);
 
-                break;
-            case 2:
-                //unregister all
-                myRawHttpSensor.unregisterListener(this);
-                myTextSensor.unregisterListener(this);
-                myJSONSensor.unregisterListener(this);
-                //reregister the new one
-                myJSONSensor.registerListener(this);
-                break;
-        }
-        itemSelected = i;
+                    break;
+                case 2:
+                    //unregister all
+                    myRawHttpSensor.unregisterListener(this);
+                    myTextSensor.unregisterListener(this);
+                    myJSONSensor.unregisterListener(this);
+                    //reregister the new one
+                    myJSONSensor.registerListener(this);
+                    break;
+            }
+            itemSelected = i;
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
 }
