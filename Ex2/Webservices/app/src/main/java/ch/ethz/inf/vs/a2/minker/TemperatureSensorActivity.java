@@ -20,6 +20,7 @@ public class TemperatureSensorActivity extends AppCompatActivity implements Sens
     private RawHttpSensor myRawHttpSensor;
     private TextSensor myTextSensor;
     private JsonSensor myJSONSensor;
+    private CharSequence sensorTextTemp;
 
     int itemSelected;
 
@@ -124,4 +125,5 @@ public class TemperatureSensorActivity extends AppCompatActivity implements Sens
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
 }
