@@ -13,9 +13,7 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static java.net.Proxy.Type.HTTP;
-
-public class XmlSensor extends ch.ethz.inf.vs.a2.minker.sensor.AbstractSensor {
+public class XmlSensor extends ch.ethz.inf.vs.a2.sensor.AbstractSensor {
 
     private String serviceAddress;
     private String serviceAction;

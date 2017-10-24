@@ -1,17 +1,12 @@
 package ch.ethz.inf.vs.a2.minker;
 
 import android.util.Log;
-import ch.ethz.inf.vs.a2.minker.sensor.AbstractSensor;
+import ch.ethz.inf.vs.a2.sensor.AbstractSensor;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
-import java.net.Proxy;
-
-import static org.ksoap2.serialization.MarshalHashtable.NAMESPACE;
 
 public class SoapSensor extends AbstractSensor {
 

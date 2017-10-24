@@ -1,4 +1,4 @@
-package ch.ethz.inf.vs.a2.minker.sensor;
+package ch.ethz.inf.vs.a2.sensor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,8 +9,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.regex.Pattern;
 
-import ch.ethz.inf.vs.a2.minker.http.HttpRawRequest;
-import ch.ethz.inf.vs.a2.minker.http.HttpRawRequestImpl;
+import ch.ethz.inf.vs.a2.http.HttpRawRequestImpl;
 
 /**
  * Created by Chris on 17.10.2017.

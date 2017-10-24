@@ -1,4 +1,4 @@
-package ch.ethz.inf.vs.a2.minker.sensor;
+package ch.ethz.inf.vs.a2.sensor;
 
 import android.hardware.Sensor;
 

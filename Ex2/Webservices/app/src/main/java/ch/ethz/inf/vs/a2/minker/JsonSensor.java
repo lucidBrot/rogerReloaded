@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import ch.ethz.inf.vs.a2.minker.sensor.AbstractSensor;
+import ch.ethz.inf.vs.a2.sensor.AbstractSensor;
 
 /**
  * Created by Chris on 17.10.2017.

@@ -1,4 +1,4 @@
-package ch.ethz.inf.vs.a2.minker.sensor;
+package ch.ethz.inf.vs.a2.sensor;
 
 /**
  * A SensorListener offers callback functions to get notifications as soon as new sensor value arrive.

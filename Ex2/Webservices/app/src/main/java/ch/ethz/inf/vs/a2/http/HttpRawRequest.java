@@ -1,4 +1,4 @@
-package ch.ethz.inf.vs.a2.minker.http;
+package ch.ethz.inf.vs.a2.http;
 
 
 /**

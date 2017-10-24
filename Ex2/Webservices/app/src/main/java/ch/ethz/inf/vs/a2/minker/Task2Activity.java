@@ -4,11 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import ch.ethz.inf.vs.a2.minker.sensor.AbstractSensor;
 
-public class Task2Activity extends AppCompatActivity implements ch.ethz.inf.vs.a2.minker.sensor.SensorListener, View.OnClickListener {
+public class Task2Activity extends AppCompatActivity implements ch.ethz.inf.vs.a2.sensor.SensorListener, View.OnClickListener {
 
     private XmlSensor xmlSensorM;
     private SoapSensor soapSensorL;

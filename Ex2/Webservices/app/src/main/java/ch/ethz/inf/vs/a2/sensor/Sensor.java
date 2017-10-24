@@ -1,4 +1,4 @@
-package ch.ethz.inf.vs.a2.minker.sensor;
+package ch.ethz.inf.vs.a2.sensor;
 
 /**
  * A sensor representation that provides temperature measurements. 

@@ -11,9 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import ch.ethz.inf.vs.a2.minker.sensor.RawHttpSensor;
-import ch.ethz.inf.vs.a2.minker.sensor.SensorListener;
-import ch.ethz.inf.vs.a2.minker.sensor.TextSensor;
+import ch.ethz.inf.vs.a2.sensor.RawHttpSensor;
+import ch.ethz.inf.vs.a2.sensor.SensorListener;
+import ch.ethz.inf.vs.a2.sensor.TextSensor;
 
 public class TemperatureSensorActivity extends AppCompatActivity implements SensorListener,AdapterView.OnItemSelectedListener {
 
