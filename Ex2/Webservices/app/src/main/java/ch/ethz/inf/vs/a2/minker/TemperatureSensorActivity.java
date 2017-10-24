@@ -53,6 +53,7 @@ public class TemperatureSensorActivity extends AppCompatActivity implements Sens
     }
 
     public void refresh(View view){
+
         switch (itemSelected){
             case 0:
                 myRawHttpSensor.getTemperature();
@@ -64,6 +65,7 @@ public class TemperatureSensorActivity extends AppCompatActivity implements Sens
                 myJSONSensor.getTemperature();
                 break;
         }
+
     }
 
     @Override
@@ -90,35 +92,35 @@ public class TemperatureSensorActivity extends AppCompatActivity implements Sens
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        switch (i){
-            case 0:
-                //unregister all
-                myRawHttpSensor.unregisterListener(this);
-                myTextSensor.unregisterListener(this);
-                myJSONSensor.unregisterListener(this);
-                //reregister the new one
-                myRawHttpSensor.registerListener(this);
+            switch (i) {
+                case 0:
+                    //unregister all
+                    myRawHttpSensor.unregisterListener(this);
+                    myTextSensor.unregisterListener(this);
+                    myJSONSensor.unregisterListener(this);
+                    //reregister the new one
+                    myRawHttpSensor.registerListener(this);
 
-                break;
-            case 1:
-                //unregister all
-                myRawHttpSensor.unregisterListener(this);
-                myTextSensor.unregisterListener(this);
-                myJSONSensor.unregisterListener(this);
-                //reregister the new one
-                myTextSensor.registerListener(this);
+                    break;
+                case 1:
+                    //unregister all
+                    myRawHttpSensor.unregisterListener(this);
+                    myTextSensor.unregisterListener(this);
+                    myJSONSensor.unregisterListener(this);
+                    //reregister the new one
+                    myTextSensor.registerListener(this);
 
-                break;
-            case 2:
-                //unregister all
-                myRawHttpSensor.unregisterListener(this);
-                myTextSensor.unregisterListener(this);
-                myJSONSensor.unregisterListener(this);
-                //reregister the new one
-                myJSONSensor.registerListener(this);
-                break;
-        }
-        itemSelected = i;
+                    break;
+                case 2:
+                    //unregister all
+                    myRawHttpSensor.unregisterListener(this);
+                    myTextSensor.unregisterListener(this);
+                    myJSONSensor.unregisterListener(this);
+                    //reregister the new one
+                    myJSONSensor.registerListener(this);
+                    break;
+            }
+            itemSelected = i;
     }
 
     @Override
