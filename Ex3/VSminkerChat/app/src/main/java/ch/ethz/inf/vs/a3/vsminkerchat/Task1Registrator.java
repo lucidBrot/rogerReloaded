@@ -23,13 +23,14 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
     private DatagramSocket socket;
     private int timeout = 2000; // miliseconds
     private int RESPONSEPACKETSIZE = 100; // TODO: set this to something real
+    private String username;
 
     /**
      * Generate a Task1Registrator AsyncTask
      * @param serverIP
      * @param serverPort
      */
-    Task1Registrator(String serverIP, int serverPort, int tries, int timeout){
+    Task1Registrator(String serverIP, int serverPort, int tries, int timeout, String username){
         super();
         this.tries = tries;
         this.uuid = UUID.randomUUID().toString();
@@ -41,13 +42,14 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
             e.printStackTrace();
         }
         this.timeout = timeout;
+        this.username = username;
     }
 
     /**
-     * Generate a Task1Registrator with default values 10.0.2.2:4446, 5 tries to connect, timeout of 2000 ms
+     * Generate a Task1Registrator with default values 10.0.2.2:4446, 5 tries to connect, timeout of 2000 ms, username Roger
      */
     Task1Registrator(){
-        this("10.0.2.2",4446,5, 2000);
+        this("10.0.2.2",4446,5, 2000, "Roger");
     }
 
 
@@ -109,8 +111,8 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
 
     private String generateRegisterRequestString(){
         return  "{\"header\":{" +
-                "\"username\": \"John\"," +
-                "\"uuid\": \""+this.uuid +"\"" +
+                "\"username\": \""+this.username+"\"," +
+                "\"uuid\": \""+this.uuid +"\"," +
                 "\"timestamp\": \"{}\"," +
                 "\"type\": \"register\"" +
                 "}," +
