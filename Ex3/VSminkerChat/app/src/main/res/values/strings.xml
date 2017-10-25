@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">VS minker Chat</string>
+    <string name="btn_join_text">join</string>
+    <string name="btn_settings_text">settings</string>
+</resources>
