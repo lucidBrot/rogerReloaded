@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("MainActivity", "Captured some onClickEvent");
         switch(view.getId()){
             case R.id.btn_join: // try to register with server
-                Task1Registrator t1r = new Task1Registrator();
+                Task1Registrator t1r = new Task1Registrator(); // DO NOT PASS BAD IP ADDRESSES
                 t1r.execute();
                 break;
             case R.id.btn_settings: // start settings Activity
