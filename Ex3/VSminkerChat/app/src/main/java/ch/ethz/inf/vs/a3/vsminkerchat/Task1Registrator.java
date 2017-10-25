@@ -22,7 +22,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
     private InetAddress serverIP;
     private DatagramSocket socket;
     private int timeout = 2000; // miliseconds
-    private int RESPONSEPACKETSIZE = 100; // TODO: set this to something real
+    private int RESPONSEPACKETSIZE = 1000; // TODO: handle buffer overflow / what when not received all data?
     private String username;
 
     /**
@@ -92,7 +92,20 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
 
             socket.receive(packet); // blocking call
 
-            Log.d("Task1/Registrator", "Recieved answer: "+ Arrays.toString(packet.getData()));
+            Log.d("Task1/Registrator", "Received answer: "+ new String(packet.getData()).trim()); // TODO: parse answer and react to it
+            /*
+            // Some logs. first try was success, second was with same username, last was with new uuid and same name
+
+            10-25 19:09:23.286 26563-26837/ch.ethz.inf.vs.a3.vsminkerchat D/Task1/Registrator: Received answer: {"header":{"type":"ack","uuid":"6ec1010d-4155-4525-8bc2-30a7f828382d","username":"server","timestamp
+            10-25 19:09:23.291 26563-26563/ch.ethz.inf.vs.a3.vsminkerchat D/Task1/Registrator: finished registration successfully? : true
+
+            10-25 19:09:40.590 26563-27104/ch.ethz.inf.vs.a3.vsminkerchat D/Task1/Registrator: Received answer: {"header":{"type":"error","uuid":"6ec1010d-4155-4525-8bc2-30a7f828382d","username":"server","timesta
+            10-25 19:09:40.591 26563-26563/ch.ethz.inf.vs.a3.vsminkerchat D/Task1/Registrator: finished registration successfully? : true
+
+            19:11:26.191 28339-28742/ch.ethz.inf.vs.a3.vsminkerchat D/Task1/Registrator: Received answer: {"header":{"type":"error","uuid":"6ec1010d-4155-4525-8bc2-30a7f828382d","username":"server","timesta
+            10-25 19:11:26.191 28339-28339/ch.ethz.inf.vs.a3.vsminkerchat D/Task1/Registrator: finished registration successfully? : true
+
+             */
             return new ResponseObject(true, packet);
 
         } catch (SocketTimeoutException e){
