@@ -12,6 +12,8 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     static String uuid = null; // will be set by Task1Registrator and can then be reused for further communication
     static String username = null; // will be set by Task1Registrator and can then be reused for further communication
+    static String serverIP = "10.0.2.2";
+    static int serverPort = 4446;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +30,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("MainActivity", "Captured some onClickEvent");
         switch(view.getId()){
             case R.id.btn_join: // try to register with server
-                String username = ((EditText) findViewById(R.id.et_username)).getText().toString();
-                Task1Registrator t1r = new Task1Registrator("10.0.2.2",4446,5, 2000, username, this); // DO NOT PASS BAD IP ADDRESSES PLZ
+                username = ((EditText) findViewById(R.id.et_username)).getText().toString();
+                Task1Registrator t1r = new Task1Registrator(serverIP, serverPort, 5, 2000, username, this); // DO NOT PASS BAD IP ADDRESSES PLZ
                 t1r.execute();
                 break;
             case R.id.btn_settings: // start settings Activity

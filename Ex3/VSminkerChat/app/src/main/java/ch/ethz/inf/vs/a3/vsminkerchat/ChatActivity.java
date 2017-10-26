@@ -18,7 +18,7 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Task1Deregistrator deregistrator = new Task1Deregistrator(getApplicationContext());
+        Task1Deregistrator deregistrator = new Task1Deregistrator(getApplicationContext(), MainActivity.uuid, MainActivity.username, MainActivity.serverIP, MainActivity.serverPort, 5, 2000);
         deregistrator.execute();
         Log.d("Task1/ChatActivity", "back button pressed. Starting deregistration asynchronically");
         super.onBackPressed();
