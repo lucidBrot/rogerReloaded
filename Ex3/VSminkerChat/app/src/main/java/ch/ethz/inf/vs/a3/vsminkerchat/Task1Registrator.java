@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -212,6 +213,8 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
             context.startActivity(intent);
         } else {
             // TODO: what to do if failed to connect?
+            Toast toast = Toast.makeText(context, "Failed to Register", Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 

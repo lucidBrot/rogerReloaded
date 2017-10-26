@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -25,7 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("MainActivity", "Captured some onClickEvent");
         switch(view.getId()){
             case R.id.btn_join: // try to register with server
-                Task1Registrator t1r = new Task1Registrator(this); // DO NOT PASS BAD IP ADDRESSES PLZ
+                String username = ((EditText) findViewById(R.id.et_username)).getText().toString();
+                Task1Registrator t1r = new Task1Registrator("10.0.2.2",4446,5, 2000, username, this); // DO NOT PASS BAD IP ADDRESSES PLZ
                 t1r.execute();
                 break;
             case R.id.btn_settings: // start settings Activity
