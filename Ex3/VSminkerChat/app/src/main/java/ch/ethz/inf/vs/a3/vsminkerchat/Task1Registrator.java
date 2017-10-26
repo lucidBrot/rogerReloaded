@@ -49,7 +49,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
      * Generate a Task1Registrator with default values 10.0.2.2:4446, 5 tries to connect, timeout of 2000 ms, username Roger
      */
     Task1Registrator(){
-        this("10.0.2.2",4446,5, 2000, "Roger");
+        this("10.0.2.2",4446,5, 2000, "roger");
     }
 
 
@@ -65,7 +65,52 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
             if(responseObject.isSuccess()) break;
         }
         // packet is now in responseObject
-        return responseObject.isSuccess();
+        if(!responseObject.isSuccess()){
+            return false;
+        }
+
+        // check if there was a server-side error. E.g. duplicate uuid or username
+        // Is this a fault of the server??? // TODO: why must usernames be unique, but uuids not??
+        /*
+        1: Roger, 8566ba1e-5017-4b76-a473-e22d36b317ce
+        2: server, 760cc36c-1894-4408-82c5-7e590e3b2932
+        3: roger, 760cc36c-1894-4408-82c5-7e590e3b2932
+        */
+        // AND WHY DOES IT ACCEPT "null" as a UUID?!
+
+        // get response as JSON
+        JSONObject jsonObject;
+        JSONObject headerObject;
+        try {
+            jsonObject = new JSONObject(new String(responseObject.getPacket().getData()).trim());
+            headerObject = new JSONObject(jsonObject.getString("header"));
+        } catch (JSONException e) {
+            Log.e("Task1/Registrator", "Server responded with invalid JSON Object. Treating this as Failure. "+e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+
+        try {
+            if(headerObject.getString("type").equals("error")){
+                Log.d("Task1/Registrator", "Server responded with error. Check that username (and maybe uuid if you like) are unique");
+                JSONObject bodyObject = new JSONObject(jsonObject.getString("body"));
+                Log.d("Task1/Registrator", "\tError code: "+bodyObject.getString("content"));
+                return false;
+            }
+
+            if(headerObject.get("type").equals("ack")){
+                Log.d("task1/Registrator", "Server responded with ACK.");
+                return true;
+            }
+
+            // if the server responded with anything else, something is wrong
+            Log.e("Task1/Registrator", "Server responend with an unexpected header type: "+headerObject.getString("type"));
+            return false;
+        } catch (JSONException e) {
+            Log.e("Task1/Registrator", "Header is not as expected. Treating this as Failure. "+e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -84,7 +129,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
             DatagramPacket packet = new DatagramPacket(data, data.length, this.serverIP, this.serverPort);
 
             socket.send(packet);
-            Log.d("Task1/Registrator", "sent packet");
+            Log.d("Task1/Registrator", "sent packet: "+new String(packet.getData()).trim());
             socket.setSoTimeout(this.timeout);
 
             // prepare packet to recieve answer
@@ -123,6 +168,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
     }
 
     private String generateRegisterRequestString(){
+
         return  "{\"header\":{" +
                 "\"username\": \""+this.username+"\"," +
                 "\"uuid\": \""+this.uuid +"\"," +
