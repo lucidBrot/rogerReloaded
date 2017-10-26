@@ -65,7 +65,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
         // try to connect until it works or we tried <i>tries</i> times
         ResponseObject responseObject = new ResponseObject(false, null);
         for(int i=0; i<tries; i++){
-            Log.d("Task1/Registrator", "Establishing connection. Try "+(i+1)+" / "+tries);
+            Log.d("Task1/Registrator", "Establishing connection to "+this.serverIP+":"+this.serverPort+". Try "+(i+1)+" / "+tries);
             responseObject = register();
             if(responseObject.isSuccess()) break;
         }
@@ -214,7 +214,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
             Intent intent = new Intent(context.getApplicationContext(), ChatActivity.class);
             context.startActivity(intent);
         } else {
-            // TODO: what to do if failed to connect?
+            // what to do if failed to connect?
             Toast toast = Toast.makeText(context, "Failed to Register", Toast.LENGTH_SHORT);
             toast.show();
         }
