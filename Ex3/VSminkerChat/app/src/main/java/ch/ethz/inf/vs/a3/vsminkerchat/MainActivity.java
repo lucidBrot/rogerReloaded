@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    static String uuid = null; // will be set by Task1Registrator and can then be reused for further communication
+    static String username = null; // will be set by Task1Registrator and can then be reused for further communication
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

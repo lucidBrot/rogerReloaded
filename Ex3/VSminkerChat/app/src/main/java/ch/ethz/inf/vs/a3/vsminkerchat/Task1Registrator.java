@@ -37,7 +37,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
     Task1Registrator(String serverIP, int serverPort, int tries, int timeout, String username, Context context){
         super();
         this.tries = tries;
-        this.uuid = UUID.randomUUID().toString();
+        this.uuid = UUID.randomUUID().toString(); // TODO: should UUID be regenerated on each registration?
         this.serverPort = serverPort;
         try {
             this.serverIP = InetAddress.getByName(serverIP); // validates IP format
@@ -208,6 +208,8 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
         Log.d("Task1/Registrator", "finished registration successfully? : "+aBoolean.toString());
+        MainActivity.uuid = this.uuid;
+        MainActivity.username = this.username;
         if(aBoolean){
             Intent intent = new Intent(context.getApplicationContext(), ChatActivity.class);
             context.startActivity(intent);

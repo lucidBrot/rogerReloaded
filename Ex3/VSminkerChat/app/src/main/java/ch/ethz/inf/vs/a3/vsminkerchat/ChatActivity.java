@@ -15,4 +15,12 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         Log.d("Task1/ChatActivity", "starting Chatactivity");
     }
+
+    @Override
+    public void onBackPressed() {
+        Task1Deregistrator deregistrator = new Task1Deregistrator(getApplicationContext());
+        deregistrator.execute();
+        Log.d("Task1/ChatActivity", "back button pressed. Starting deregistration asynchronically");
+        super.onBackPressed();
+    }
 }
