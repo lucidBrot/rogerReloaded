@@ -3,6 +3,7 @@ package ch.ethz.inf.vs.a3.vsminkerchat;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 /**
  * Should be started when Task1Registrator returns true
@@ -12,5 +13,6 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        Log.d("Task1/ChatActivity", "starting Chatactivity");
     }
 }

@@ -1,5 +1,7 @@
 package ch.ethz.inf.vs.a3.vsminkerchat;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -24,13 +26,14 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
     private int timeout = 2000; // miliseconds
     private int RESPONSEPACKETSIZE = 1000; // TODO: handle buffer overflow / what when not received all data?
     private String username;
+    private Context context;
 
     /**
      * Generate a Task1Registrator AsyncTask
      * @param serverIP
      * @param serverPort
      */
-    Task1Registrator(String serverIP, int serverPort, int tries, int timeout, String username){
+    Task1Registrator(String serverIP, int serverPort, int tries, int timeout, String username, Context context){
         super();
         this.tries = tries;
         this.uuid = UUID.randomUUID().toString();
@@ -43,13 +46,14 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
         }
         this.timeout = timeout;
         this.username = username;
+        this.context = context;
     }
 
     /**
      * Generate a Task1Registrator with default values 10.0.2.2:4446, 5 tries to connect, timeout of 2000 ms, username Roger
      */
-    Task1Registrator(){
-        this("10.0.2.2",4446,5, 2000, "roger");
+    Task1Registrator(Context context){
+        this("10.0.2.2",4446,5, 2000, "roger", context);
     }
 
 
@@ -113,12 +117,6 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
         }
     }
 
-    @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        super.onPostExecute(aBoolean);
-        Log.d("Task1/Registrator", "finished registration successfully? : "+aBoolean.toString());
-    }
-
     private ResponseObject register(){
         try {
             // Socket on a random port
@@ -137,7 +135,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
 
             socket.receive(packet); // blocking call
 
-            Log.d("Task1/Registrator", "Received answer: "+ new String(packet.getData()).trim()); // TODO: parse answer and react to it
+            Log.d("Task1/Registrator", "Received answer: "+ new String(packet.getData()).trim());
             /*
             // Some logs. first try was success, second was with same username, last was with new uuid and same name
 
@@ -202,6 +200,18 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
 
         public void setSuccess(boolean success) {
             this.success = success;
+        }
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        super.onPostExecute(aBoolean);
+        Log.d("Task1/Registrator", "finished registration successfully? : "+aBoolean.toString());
+        if(aBoolean){
+            Intent intent = new Intent(context.getApplicationContext(), ChatActivity.class);
+            context.startActivity(intent);
+        } else {
+            // TODO: what to do if failed to connect?
         }
     }
 
