@@ -2,4 +2,7 @@
     <string name="app_name">VS minker Chat</string>
     <string name="btn_join_text">join</string>
     <string name="btn_settings_text">settings</string>
+    <string name="server_ip_txt">server IP</string>
+    <string name="server_port_txt">server port</string>
+    <string name="btn_save_settings_text">save</string>
 </resources>

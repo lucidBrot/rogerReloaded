@@ -23,4 +23,6 @@ public class ChatActivity extends AppCompatActivity {
         Log.d("Task1/ChatActivity", "back button pressed. Starting deregistration asynchronically");
         super.onBackPressed();
     }
+
+    // TODO: onPause and onResume - deregister and reregister?
 }

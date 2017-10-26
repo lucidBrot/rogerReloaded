@@ -1,13 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               tools:context=".SettingsActivity">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+                android:text="SETTINGS. YEY."
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView"/>
 
-    <TextView
-            android:text="SETTINGS. YEY."
+        <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:id="@+id/et_server_ip"
+                  android:maxLines="1"
+                  android:inputType="phone" android:hint="@string/server_ip_txt"
+        android:freezesText="true"/>
+
+        <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:maxLines="1"
+                  android:inputType="number"
+                  android:id="@+id/et_server_port" android:hint="@string/server_port_txt"
+                  android:freezesText="true"/>
+
+    </LinearLayout>
+    <Button
+            android:text="@string/btn_save_settings_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/textView"/>
-</LinearLayout>
+            android:layout_height="wrap_content" android:id="@+id/btn_save_settings"
+            android:layout_alignParentBottom="true"
+    />
+</RelativeLayout>
