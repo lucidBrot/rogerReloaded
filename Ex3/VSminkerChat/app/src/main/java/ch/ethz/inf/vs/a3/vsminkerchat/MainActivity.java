@@ -31,8 +31,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(view.getId()){
             case R.id.btn_join: // try to register with server
                 username = ((EditText) findViewById(R.id.et_username)).getText().toString();
-                Task1Registrator t1r = new Task1Registrator(serverIP, serverPort, 5, 2000, username, this); // DO NOT PASS BAD IP ADDRESSES PLZ
-                t1r.execute();
+                if(username == null || username.equals("")) {toast("Please enter a valid username");} else {
+                    Task1Registrator t1r = new Task1Registrator(serverIP, serverPort, 5, 2000, username, this); // DO NOT PASS BAD IP ADDRESSES PLZ
+                    t1r.execute();
+                }
                 break;
             case R.id.btn_settings: // start settings Activity
                 Intent intent = new Intent(this, SettingsActivity.class);
