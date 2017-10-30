@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
+import ch.ethz.inf.vs.a3.message.ErrorCodes;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +29,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
     private int RESPONSEPACKETSIZE = 1000; // TODO: handle buffer overflow / what when not received all data?
     private String username;
     private Context context;
+    private String latestErrorText;
 
     /**
      * Generate a Task1Registrator AsyncTask
@@ -38,6 +40,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
         super();
         this.tries = tries;
         this.uuid = UUID.randomUUID().toString(); // TODO: should UUID be regenerated on each registration?
+        ///this.uuid = "267970af-76c7-4f11-818b-5ddf76ad16d2";
         this.serverPort = serverPort;
         try {
             this.serverIP = InetAddress.getByName(serverIP); // validates IP format
@@ -61,6 +64,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... voids) {
         Log.d("Task1/Registrator", "was called asynchronously");
+        latestErrorText = null;
 
         // try to connect until it works or we tried <i>tries</i> times
         ResponseObject responseObject = new ResponseObject(false, null);
@@ -100,6 +104,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
                 Log.d("Task1/Registrator", "Server responded with error. Check that username (and maybe uuid if you like) are unique");
                 JSONObject bodyObject = new JSONObject(jsonObject.getString("body"));
                 Log.d("Task1/Registrator", "\tError code: "+bodyObject.getString("content"));
+                latestErrorText = ErrorCodes.getStringError(Integer.valueOf(bodyObject.getString("content"))); // store for error message
                 return false;
             }
 
@@ -214,8 +219,9 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
             Intent intent = new Intent(context.getApplicationContext(), ChatActivity.class);
             context.startActivity(intent);
         } else {
-            // what to do if failed to connect?
-            Toast toast = Toast.makeText(context, "Failed to Register", Toast.LENGTH_SHORT);
+            // what to do if failed to connect:
+            if(latestErrorText == null) {latestErrorText = "Registration failed for unexpected reasons";}
+            Toast toast = Toast.makeText(context, latestErrorText, Toast.LENGTH_SHORT);
             toast.show();
         }
     }
