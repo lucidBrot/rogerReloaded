@@ -12,13 +12,14 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 
 /**
  * AsyncTask Task1Registrator. The background task returns true if registration was successful after this.tries retries
  */
-public class Task3MessageGetter extends AsyncTask<Void, Void, DatagramPacket> {
+public class Task3MessageGetter extends AsyncTask<Void, Void, ArrayList<DatagramPacket>> {
     private int tries;
     private String uuid; // random identifier
     private int serverPort;
@@ -61,7 +62,7 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, DatagramPacket> {
 
 
     @Override
-    protected DatagramPacket doInBackground(Void... voids) {
+    protected ArrayList<DatagramPacket> doInBackground(Void... voids) {
         Log.d("Task3/MessageGetter", "was called asynchronously");
 
         // try to connect until it works or we tried <i>tries</i> times
@@ -85,42 +86,57 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, DatagramPacket> {
         */
         // AND WHY DOES IT ACCEPT "null" as a UUID?!
 
-        // get response as JSON
-        JSONObject jsonObject;
-        JSONObject headerObject;
-        try {
-            jsonObject = new JSONObject(new String(responseObject.getPacket().getData()).trim());
-            headerObject = new JSONObject(jsonObject.getString("header"));
-        } catch (JSONException e) {
-            Log.e("Task3/MessageGetter", "Server responded with invalid JSON Object. Treating this as Failure. "+e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        ArrayList<DatagramPacket> returnList = new ArrayList<>();
+        Boolean neverAddedObject = true;
 
-        try {
-            if(headerObject.getString("type").equals("error")){
-                Log.d("Task3/MessageGetter", "Server responded with error. Check that username (and maybe uuid if you like) are unique");
-                JSONObject bodyObject = new JSONObject(jsonObject.getString("body"));
-                Log.d("Task3/MessageGetter", "\tError code: "+bodyObject.getString("content"));
-                return null;
+        for(DatagramPacket myPacket:responseObject.getPacket()){
+            JSONObject jsonObject;
+            JSONObject headerObject;
+            try {
+                jsonObject = new JSONObject(new String(myPacket.getData()).trim());
+                headerObject = new JSONObject(jsonObject.getString("header"));
+            } catch (JSONException e) {
+                Log.e("Task3/MessageGetter", "Server responded with invalid JSON Object. Treating this as Failure. "+e.getMessage());
+                e.printStackTrace();
+                continue;
             }
 
-            if(headerObject.get("type").equals("ack")){
-                Log.d("Task3/MessageGetter", "Server responded with ACK.");
-                return responseObject.getPacket();
-            }
+            try {
+                if(headerObject.getString("type").equals("error")){
+                    Log.d("Task3/MessageGetter", "Server responded with error. Check that username (and maybe uuid if you like) are unique");
+                    JSONObject bodyObject = new JSONObject(jsonObject.getString("body"));
+                    Log.d("Task3/MessageGetter", "\tError code: "+bodyObject.getString("content"));
+                    continue;
+                }
 
-            // if the server responded with anything else, something is wrong
-            Log.e("Task3/MessageGetter", "Server responend with an unexpected header type: "+headerObject.getString("type"));
-            return null;
-        } catch (JSONException e) {
-            Log.e("Task3/MessageGetter", "Header is not as expected. Treating this as Failure. "+e.getMessage());
-            e.printStackTrace();
+                if(headerObject.get("type").equals("message")){
+                    Log.d("Task3/MessageGetter", "Server responded with ACK.");
+                    returnList.add(myPacket);
+                    neverAddedObject = false;
+                }
+
+                // if the server responded with anything else, something is wrong
+                Log.e("Task3/MessageGetter", "Server responend with an unexpected header type: "+headerObject.getString("type"));
+                continue;
+
+            } catch (JSONException e) {
+                Log.e("Task3/MessageGetter", "Header is not as expected. Treating this as Failure. "+e.getMessage());
+                e.printStackTrace();
+                continue;
+            }
+        }
+        if(neverAddedObject){
             return null;
         }
+        return returnList;
+
     }
 
     private ResponseObject register(){
+        ArrayList<DatagramPacket> datagramPackets = new ArrayList<>();
+        Boolean running = true;
+        String received = "";
+
         try {
             // Socket on a random port
             socket = new DatagramSocket();
@@ -136,9 +152,29 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, DatagramPacket> {
             // prepare packet to recieve answer
             packet.setData(new byte[RESPONSEPACKETSIZE]);
 
-            socket.receive(packet); // blocking call
+            int i = 0;
+            while (running){
+                try {
+                    socket.receive(packet); // blocking call
+                } catch (SocketTimeoutException e){
+                    Log.d("Task3/MessageGetter","Socket Timeout while waiting to receive ACK on Message: " + String.valueOf(i));
+                    break;
+                }
+                Log.d("Task3/MessageGetter", "Received answer: "+ new String(packet.getData()).trim() + " Nr: " + String.valueOf(i));
+                i++;
+                datagramPackets.add(new DatagramPacket(packet.getData().clone(),packet.getLength(),packet.getAddress(),packet.getPort()));
 
-            Log.d("Task3/MessageGetter", "Received answer: "+ new String(packet.getData()).trim());
+                String rec = new String(packet.getData());
+
+                //if the packet is empty or null, then the server is done sending?
+                if ( rec == null || rec.length() == 0 ){
+                    running = false;
+                }
+                else {
+                    received += rec;
+                }
+            }
+
             /*
             // Some logs. first try was success, second was with same username, last was with new uuid and same name
 
@@ -152,20 +188,17 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, DatagramPacket> {
             10-25 19:11:26.191 28339-28339/ch.ethz.inf.vs.a3.vsminkerchat D/Task1/Registrator: finished registration successfully? : true
 
              */
-            return new ResponseObject(true, packet);
+            return new ResponseObject(true, datagramPackets);
 
-        } catch (SocketTimeoutException e){
-            Log.d("Task3/MessageGetter","Socket Timeout while waiting to receive ACK");
-            return new ResponseObject(false,null);
-        }
-        catch (SocketException e) {
+        } catch (SocketException e) {
             Log.e("Task3/MessageGetter","Socket Exception: "+e.getMessage());
             e.printStackTrace();
+            return new ResponseObject(false,null);
         } catch (IOException e) {
             Log.e("Task3/MessageGetter","I/O Exception: "+e.getMessage());
             e.printStackTrace();
+            return new ResponseObject(false,null);
         }
-        return new ResponseObject(false,null);
     }
 
     private String generateRegisterRequestString(){
@@ -182,18 +215,18 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, DatagramPacket> {
 
     private class ResponseObject {
         private boolean success;
-        private DatagramPacket packet;
+        private ArrayList<DatagramPacket> packet;
 
-        ResponseObject(boolean s, DatagramPacket p){
+        ResponseObject(boolean s, ArrayList<DatagramPacket> p){
             this.success = s;
             this.packet = p;
         }
 
-        public DatagramPacket getPacket() {
+        public ArrayList<DatagramPacket> getPacket() {
             return packet;
         }
 
-        public void setPacket(DatagramPacket packet) {
+        public void setPacket(ArrayList<DatagramPacket> packet) {
             this.packet = packet;
         }
 
@@ -207,17 +240,16 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, DatagramPacket> {
     }
 
     @Override
-    protected void onPostExecute(DatagramPacket rp) {
+    protected void onPostExecute(ArrayList<DatagramPacket> rp) {
         super.onPostExecute(rp);
 
-        Boolean aBoolean = (rp == null);
-        delegate.processFinish(rp);
+        Boolean aBoolean = (rp != null);
 
         Log.d("Task3/MessageGetter", "finished successfully? : "+aBoolean.toString());
         MainActivity.uuid = this.uuid;
         MainActivity.username = this.username;
         if(aBoolean){
-
+            delegate.processFinish(rp);
         } else {
             // what to do if failed to connect?
             Toast toast = Toast.makeText(context, "Failed to get Messages", Toast.LENGTH_SHORT);
