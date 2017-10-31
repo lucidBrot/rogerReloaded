@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+import ch.ethz.inf.vs.a3.message.ErrorCodes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +22,7 @@ public class Task1Deregistrator extends AsyncTask<Void, Void, Boolean> {
     private int timeout = 2000; // miliseconds
     private int RESPONSEPACKETSIZE = 1000; // TODO: handle buffer overflow / what when not received all data?
     private String username;
+    private String latest_errormessage;
 
     Task1Deregistrator(Context appcontext, String uuid, String username, String serverIP, int serverPort, int tries, int timeout){
         this.username = username;
@@ -45,6 +47,7 @@ public class Task1Deregistrator extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         Log.d("Task1/Deregistrator", "was called");
         ResponseObject responseObject = new ResponseObject(false, null);
+        latest_errormessage = null;
         for(int i=0; i<tries; i++){
             Log.d("Task1/Deegistrator", "Establishing connection. Try "+(i+1)+" / "+tries);
             responseObject = deregister();
@@ -72,6 +75,7 @@ public class Task1Deregistrator extends AsyncTask<Void, Void, Boolean> {
                 Log.d("Task1/Deregistrator", "Server responded with error. Check that username (and maybe uuid if you like) are unique");
                 JSONObject bodyObject = new JSONObject(jsonObject.getString("body"));
                 Log.d("Task1/Deregistrator", "\tError code: "+bodyObject.getString("content"));
+                latest_errormessage = ErrorCodes.getStringError(bodyObject.getInt("content"));
                 return false;
             }
 
@@ -128,7 +132,7 @@ public class Task1Deregistrator extends AsyncTask<Void, Void, Boolean> {
     }
 
     private String generateDeregisterRequestString(){
-
+        //<debug>// this.uuid = "267970af-76c7-4f11-818b-5ddf76ad16d2";
         return  "{\"header\":{" +
                 "\"username\": \""+this.username+"\"," +
                 "\"uuid\": \""+this.uuid +"\"," +
@@ -173,8 +177,8 @@ public class Task1Deregistrator extends AsyncTask<Void, Void, Boolean> {
             Toast toast = Toast.makeText(appcontext, "Successfully Deregistered "+this.username, Toast.LENGTH_SHORT);
             toast.show();
         } else {
-            // TODO: what to do if failed to connect?
-            Toast toast = Toast.makeText(appcontext, "Failed to Deregister", Toast.LENGTH_SHORT);
+            if(latest_errormessage == null) {latest_errormessage = "Deregistration failed for unexpected reasons.";}
+            Toast toast = Toast.makeText(appcontext,  latest_errormessage, Toast.LENGTH_SHORT);
             toast.show();
         }
     }
