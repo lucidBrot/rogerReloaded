@@ -188,7 +188,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
         private DatagramPacket packet;
 
         ResponseObject(boolean s, DatagramPacket p){
-            this.success=s;
+            this.success = s;
             this.packet = p;
         }
 
