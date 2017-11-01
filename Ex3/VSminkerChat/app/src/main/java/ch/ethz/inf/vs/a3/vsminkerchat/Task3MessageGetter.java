@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 
+import ch.ethz.inf.vs.a3.message.ErrorCodes;
+
 /**
  * AsyncTask Task1Registrator. The background task returns true if registration was successful after this.tries retries
  */
@@ -29,6 +31,8 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, ArrayList<Datagram
     private int RESPONSEPACKETSIZE = 1000; // TODO: handle buffer overflow / what when not received all data?
     private String username;
     private Context context;
+    private String latestErrorText;
+
 
     public AsyncResponse delegate = null;
 
@@ -106,6 +110,8 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, ArrayList<Datagram
                     Log.d("Task3/MessageGetter", "Server responded with error. Check that username (and maybe uuid if you like) are unique");
                     JSONObject bodyObject = new JSONObject(jsonObject.getString("body"));
                     Log.d("Task3/MessageGetter", "\tError code: "+bodyObject.getString("content"));
+                    latestErrorText = ErrorCodes.getStringError(Integer.valueOf(bodyObject.getString("content"))); // store for error message
+
                     continue;
                 }
 
@@ -126,6 +132,9 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, ArrayList<Datagram
             }
         }
         if(neverAddedObject){
+            if(latestErrorText == null){
+                latestErrorText = "No response from server";
+            }
             return null;
         }
         return returnList;
@@ -252,7 +261,8 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, ArrayList<Datagram
             delegate.processFinish(rp);
         } else {
             // what to do if failed to connect?
-            Toast toast = Toast.makeText(context, "Failed to get Messages", Toast.LENGTH_SHORT);
+            if(latestErrorText == null) {latestErrorText = "Failed to get Messages for unexpected reasons";}
+            Toast toast = Toast.makeText(context, latestErrorText, Toast.LENGTH_SHORT);
             toast.show();
         }
     }
