@@ -119,6 +119,7 @@ public class Task1Deregistrator extends AsyncTask<Void, Void, Boolean> {
 
         } catch (SocketTimeoutException e){
             Log.d("Task1/Deregistrator","Socket Timeout while waiting to receive deregistration ACK");
+            this.latest_errormessage = "Socket Timeout while waiting to receive deregistration ACK";
             return new Task1Deregistrator.ResponseObject(false,null);
         }
         catch (SocketException e) {
