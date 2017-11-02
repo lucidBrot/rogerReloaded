@@ -98,7 +98,7 @@ public class VectorClock implements Clock {
             String[] keyValue = item.split("\"");
             if(keyValue.length == 3) {
                 String key = keyValue[1];
-                String value = keyValue[2].split(":")[1].split("}")[0];
+                String value = keyValue[2].split(":")[1].split("\\}")[0];
                 try {
 
                     newMap.put(Integer.parseInt(key), Integer.parseInt(value));

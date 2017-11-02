@@ -159,6 +159,7 @@ public class Task1Registrator extends AsyncTask<Void, Void, Boolean> {
 
         } catch (SocketTimeoutException e){
             Log.d("Task1/Registrator","Socket Timeout while waiting to receive ACK");
+            this.latestErrorText = "Socket Timeout while waiting to receive ACK";
             return new ResponseObject(false,null);
         }
         catch (SocketException e) {
