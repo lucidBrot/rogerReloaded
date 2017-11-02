@@ -1,0 +1,32 @@
+Hallo Eric, 
+ich habe das nochmal getestet. Ihr habt recht, es wird tatsächlich nicht neugestartet. Komischerweise dauert bei eurer Impementierung der OrientationChange sehr lange, weshalb es so erschien als ob es neu gestartet wird. Ich habe die Bewertung entsprechend geändert. 
+Zum Minitest:
+Bei 1B muss man die Werte des Events kopieren, weil das Array vom System evtl. wiederverwendet wird und dann falsche Werte geloggt werden können. 
+The application doesn't own the event object passed as a parameter and therefore cannot hold on to it. The object may be part of an internal pool and may be reused by the framework. (https://developer.android.com/reference/android/hardware/SensorEventListener.html)
+Bei 5b ist eure Antwort für einen bound Service natürlich richtig. Bei einem started Service kann ein Prozess ja auf jeden Fall auch mit dem Service interagieren, wie bei uns z.B. einen Wert über den Intent übergeben. Man kann auch Werte zurückgeben, bspw. über einen PendingIntent (siehe hier: https://developer.android.com/guide/components/services.html#StartingAService). Nun ist so, dass bei einem mehrfachen Aufruf von startService nicht mehrere Instanzen des Service gestartet werden, sondern immer für eine bereits laufende Instanz immer wieder onStartCommand aufgerufen wird. D.h. es werden nicht mehrere Instanzen erstellt, sondern immer auf die gleiche zugegriffen. Natürlich ist es aber richtig, dass für eine hohe "Kommunikationsrate" ein bound Service verwendet werden sollte. 
+
+Ich hoffe das klärt eure Fragen. 
+
+Grüsse, 
+Vincent
+
+
+Mink EricReplyReply AllForwardActions
+To:
+ Becker Vincent 
+Sent ItemsWednesday, October 25, 2017 11:23 AM
+Dear Assistant
+
+We have a question about your evaluation of our task 1 in assignment 1.
+You said the graph would start over when rotating the screen. 
+But it shouldn't.. on our phones and in the emulator it keeps the values..
+I implemented parceable in the container, which keeps all the important information.
+This container gets saved in the "onsavedstate()" method and gets recalled in the "onCreate()" method.
+Could you please look again and test it?
+There must've been a mistake as our code should take rotation into account in Task 1.
+If there was another problem, could you please elaborate on that?
+
+On another note: Are there master solutions available for the task 4, so we could see what we did wrong / what the correct answers would have been?
+
+Best Regards
+Team minker
