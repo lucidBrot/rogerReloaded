@@ -143,6 +143,7 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, ArrayList<Datagram
 
     private ResponseObject register(){
         ArrayList<DatagramPacket> datagramPackets = new ArrayList<>();
+        ArrayList<byte[]> dataPackets = new ArrayList<>();
         Boolean running = true;
         String received = "";
 
@@ -169,9 +170,26 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, ArrayList<Datagram
                     Log.d("Task3/MessageGetter","Socket Timeout while waiting to receive ACK on Message: " + String.valueOf(i));
                     break;
                 }
-                Log.d("Task3/MessageGetter", "Received answer: "+ new String(packet.getData()).trim() + " Nr: " + String.valueOf(i));
+                Log.d("Task3/MessageGetter", "myuuid: " + uuid + " Received answer: " + new String(packet.getData()).trim() + " Nr: " + String.valueOf(i));
                 i++;
-                datagramPackets.add(new DatagramPacket(packet.getData().clone(),packet.getLength(),packet.getAddress(),packet.getPort()));
+
+                boolean duplicateValue = false; //duplicate value => true
+                byte [] tmpData = packet.getData().clone();
+
+                for (byte [] mydata : dataPackets){
+                    String tmpDataString = new String(mydata);
+                    String newDataString = new String(tmpData);
+
+                    if (tmpDataString.equals(newDataString)){
+                        duplicateValue = true;
+                    }
+                }
+
+                //only add if not a duplicate Message
+                if (!duplicateValue){
+                    dataPackets.add(tmpData);
+                    datagramPackets.add(new DatagramPacket(tmpData,packet.getLength(),packet.getAddress(),packet.getPort()));
+                }
 
                 String rec = new String(packet.getData());
 
@@ -259,6 +277,8 @@ public class Task3MessageGetter extends AsyncTask<Void, Void, ArrayList<Datagram
         MainActivity.username = this.username;
         if(aBoolean){
             delegate.processFinish(rp);
+            Toast toasty = Toast.makeText(context, "Success" , Toast.LENGTH_SHORT);
+            toasty.show();
         } else {
             // what to do if failed to connect?
             if(latestErrorText == null) {latestErrorText = "Failed to get Messages for unexpected reasons";}
