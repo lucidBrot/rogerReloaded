@@ -56,14 +56,18 @@ public class VectorClock implements Clock {
     public boolean happenedBefore(Clock other) {
         if (other instanceof VectorClock) {
             VectorClock otherClock = (VectorClock) other;
+            boolean hasOneStrictlySmaller = false;
             for (Integer key : otherClock.vector.keySet()) {
                 if(vector.containsKey(key)){
                     if (vector.get(key) > otherClock.vector.get(key)){
                         return false;
                     }
+                    if(vector.get(key) < otherClock.vector.get(key)){
+                        hasOneStrictlySmaller = true;
+                    }
                 }
             }
-            return true;
+            return hasOneStrictlySmaller;
         }
         return false;
     }
