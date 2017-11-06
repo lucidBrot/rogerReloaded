@@ -1,0 +1,11 @@
+Hi Eric,
+
+1c) Only your first answer regarding statelessness can be considered correct. All other answer are not related to HTTP headers. Correct answers would be the Cache-Control header to implement cacheability or the Accept header to implement uniform interfaces.
+
+3d) REST does not define JSON as data representation. A RESTful server can return data as it wishes.
+
+4c) The URL scheme for SMTP is mailto://someaddress@examlpe.com, since SMTP is a e-mail protocol. The binding part of your answer was correct.
+
+I hope this helps. Best regards,
+
+  - Leyna
